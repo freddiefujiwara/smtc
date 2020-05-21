@@ -36,6 +36,22 @@ class Smtc {
   initialize(){
     this._clean();
     this.json = this.smcat.render(this.contents,{outputType: "json"});
+    this.states = this.json.states.map((s) => s.name);
+    this.json.transitions.forEach((t)=> {
+      this.events.push(t.event || "<None>");
+    });
+    this.states.forEach(() => {
+      const row = new Array();
+      this.events.forEach(() => {
+        row.push(0);
+      });
+      this.transitions.push(row);
+    })
+    this.json.transitions.forEach((t)=> {
+      const event = t.event || "<None>";
+      this.transitions[this.states.indexOf(t.from)][this.events.indexOf(event)]
+        = this.states.indexOf(t.to);
+    });
     return this;
   }
   /**
@@ -50,6 +66,9 @@ class Smtc {
    */
   _clean(){
     this.json = "";
+    this.states = new Array();
+    this.events = new Array();
+    this.transitions = new Array();
   }
 }
 

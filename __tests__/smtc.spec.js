@@ -14,13 +14,13 @@ describe('Smtc', () => {
     // no such file or directory
     const t = () => {
       const si = new Smtc();
-       si.readFile('__tests__/testData.csv');
+      si.readFile('__tests__/testData.csv');
     };
     expect(t).toThrow(/no such file or directory/);
     s.contents = "syntax error;";
     // no such file or directory
     const t2 = () => {
-       s.initialize();
+      s.initialize();
     };
     expect(t2).toThrow(/Expected/);
   });
@@ -29,13 +29,43 @@ describe('Smtc', () => {
     s.readFile('__tests__/testData.txt');
     expect(s.initialize).toBeInstanceOf(Function);
     expect(s.initialize()).toBeInstanceOf(Smtc);
+    expect(s.events).toStrictEqual([
+      '<None>',
+      'reserve',
+      'approve',
+      'cancel approval',
+      'reject',
+      'cancel of reservation',
+      'cancel',
+      'car delivered'
+    ]);
+    expect(s.states).toStrictEqual([
+      'initial',
+      'Accepting reservations',
+      'Reservation accepted',
+      'Reserved',
+      'final'
+    ]);
+    expect(s.transitions).toStrictEqual([
+      [1,0,0,0,0,0,0,0],
+      [0,2,0,0,0,0,0,0],
+      [0,0,3,0,1,1,0,0],
+      [0,0,0,2,0,0,1,4],
+      [0,0,0,0,0,0,0,0]
+    ]);
   });
   it(' _clean() : can clean all parameters', () => {
     const s = new Smtc();
     expect(s.json).toBe("");
+    expect(s.events.length).toBe(0);
+    expect(s.states.length).toBe(0);
+    expect(s.transitions.length).toBe(0);
     s.readFile('__tests__/testData.txt')
       .initialize();
     s._clean();
+    expect(s.events.length).toBe(0);
+    expect(s.states.length).toBe(0);
+    expect(s.transitions.length).toBe(0);
     expect(s.json).toBe("");
   });
 });
