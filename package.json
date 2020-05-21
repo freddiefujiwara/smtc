@@ -1,0 +1,37 @@
+{
+  "name": "smtc",
+  "version": "0.0.1",
+  "description": "A test case generator from state machine diagram",
+  "main": "src/smtc.js",
+  "scripts": {
+    "test": "npx jest",
+    "docs": "npx jsdoc2md -c jsdoc.conf.json src/smtc.js  > DOCS.md"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/freddiefujiwara/smtc.git"
+  },
+  "keywords": [
+    "state-machine",
+    "testing-tools",
+    "testcase-generator"
+  ],
+  "author": {
+    "name": "Fumikazu Fujiwara",
+    "email": "npm@ze.gs",
+    "url": "http://freddiefujiwara.com"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/freddiefujiwara/smtc/issues"
+  },
+  "homepage": "https://freddiefujiwara.github.io/smtc/",
+  "devDependencies": {
+    "jest": "^26.0.1",
+    "jsdoc-to-markdown": "^5.0.3"
+  },
+  "dependencies": {
+    "minimist": "^1.2.5",
+    "state-machine-cat": "^7.0.0"
+  }
+}
