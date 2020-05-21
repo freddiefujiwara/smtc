@@ -53,6 +53,13 @@ describe('Smtc', () => {
       [0,0,0,2,0,0,1,4],
       [0,0,0,0,0,0,0,0]
     ]);
+    expect(s.matrix).toStrictEqual([
+          [ [   ], [0   ], [   ], [   ], [   ] ],
+          [ [   ], [    ], [ 1 ], [   ], [   ] ],
+          [ [   ], [4, 5], [   ], [ 2 ], [   ] ],
+          [ [   ], [6   ], [ 3 ], [   ], [ 7 ] ],
+          [ [   ], [    ], [   ], [   ], [   ] ]
+        ]);
   });
   it(' _clean() : can clean all parameters', () => {
     const s = new Smtc();
@@ -60,12 +67,14 @@ describe('Smtc', () => {
     expect(s.events.length).toBe(0);
     expect(s.states.length).toBe(0);
     expect(s.transitions.length).toBe(0);
+    expect(s.matrix.length).toBe(0);
     s.readFile('__tests__/testData.txt')
       .initialize();
     s._clean();
+    expect(s.json).toBe("");
     expect(s.events.length).toBe(0);
     expect(s.states.length).toBe(0);
     expect(s.transitions.length).toBe(0);
-    expect(s.json).toBe("");
+    expect(s.matrix.length).toBe(0);
   });
 });

@@ -40,6 +40,7 @@ class Smtc {
     this.json.transitions.forEach((t)=> {
       this.events.push(t.event || "<None>");
     });
+    //initialize this.transitions
     this.states.forEach(() => {
       const row = new Array();
       this.events.forEach(() => {
@@ -47,10 +48,20 @@ class Smtc {
       });
       this.transitions.push(row);
     })
+    //initialize this.matrix
+    this.states.forEach(() => {
+      const row = new Array();
+      this.states.forEach(() => {
+        row.push(new Array());
+      });
+      this.matrix.push(row);
+    })
     this.json.transitions.forEach((t)=> {
       const event = t.event || "<None>";
       this.transitions[this.states.indexOf(t.from)][this.events.indexOf(event)]
         = this.states.indexOf(t.to);
+      this.matrix[this.states.indexOf(t.from)][this.states.indexOf(t.to)]
+        .push(this.events.indexOf(event));
     });
     return this;
   }
@@ -69,6 +80,7 @@ class Smtc {
     this.states = new Array();
     this.events = new Array();
     this.transitions = new Array();
+    this.matrix = new Array();
   }
 }
 
