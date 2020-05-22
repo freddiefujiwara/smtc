@@ -40,7 +40,7 @@ $ smtc __tests__/testData.txt
 |**Reserved**||||Reservation accepted|||Accepting reservations|final|
 |**final**|||||||||
 
-## zero sep cases
+## zero step cases
 
 ```shell
 $ smtc __tests__/testData.txt -o z
@@ -57,7 +57,7 @@ $ smtc __tests__/testData.txt -o z
 |6|Reserved|cancel approval|Reservation accepted|
 |7|Reserved|car delivered|final|
 
-## zero sep matrix
+## zero step matrix
 ```shell
 $ smtc __tests__/testData.txt -o zm
 ```
