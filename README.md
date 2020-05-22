@@ -7,7 +7,6 @@ Document is [here](https://github.com/freddiefujiwara/smtc/blob/master/DOCS.md)
 
 ``` shell
 $ npm i -g smtc
-
 ```
 
 # Usage
