@@ -12,6 +12,8 @@ $ npm i -g smtc
 
 # Usage
 ## sample data
+![alt text](https://raw.githubusercontent.com/freddiefujiwara/smtc/master/__tests__/testData.svg)
+
 ``` shell
 $ cat __tests__/testData.txt
 initial                  => "Accepting reservations" ;
