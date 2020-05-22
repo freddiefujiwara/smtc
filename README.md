@@ -1,5 +1,6 @@
 # smtc
 Try it in your browser! [TRY IT NOW](https://freddiefujiwara.github.io/smtc/#input)
+
 Document is [here](https://github.com/freddiefujiwara/smtc/blob/master/DOCS.md)
 
 # install
