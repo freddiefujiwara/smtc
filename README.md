@@ -26,7 +26,6 @@ initial                  => "Accepting reservations" ;
 ## Transition matrix
 ```shell
 ./bin/index.js __tests__/testData.txt
-
 ```
 
 ||[None]|reserve|approve|cancel approval|reject|cancel of reservation|cancel|car delivered|
