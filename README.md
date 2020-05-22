@@ -7,7 +7,6 @@ Document is [here](https://github.com/freddiefujiwara/smtc/blob/master/DOCS.md)
 
 ``` shell
 $ npm i -g smtc
-
 ```
 
 # Usage
@@ -28,7 +27,7 @@ initial                  => "Accepting reservations" ;
 
 ## Transition matrix
 ```shell
-./bin/index.js __tests__/testData.txt
+$ smtc __tests__/testData.txt
 ```
 
 ||[None]|reserve|approve|cancel approval|reject|cancel of reservation|cancel|car delivered|
@@ -42,7 +41,7 @@ initial                  => "Accepting reservations" ;
 ## zero sep cases
 
 ```shell
-./bin/index.js __tests__/testData.txt -o z
+$ smtc __tests__/testData.txt -o z
 ```
 
 |#|State#1|Event#1|State#2|
@@ -58,7 +57,7 @@ initial                  => "Accepting reservations" ;
 
 ## zero sep matrix
 ```shell
-./bin/index.js __tests__/testData.txt -o zm
+$ smtc __tests__/testData.txt -o zm
 ```
 
 ||initial|Accepting reservations|Reservation accepted|Reserved|final|
@@ -71,7 +70,7 @@ initial                  => "Accepting reservations" ;
 
 ## one step cases
 ```shell
-./bin/index.js __tests__/testData.txt -o o
+$ smtc __tests__/testData.txt -o o
 ```
 
 |#|State#1|Event#1|State#2|Event#2|State#3|
@@ -92,7 +91,7 @@ initial                  => "Accepting reservations" ;
 
 ## one step matrix
 ```shell
-./bin/index.js __tests__/testData.txt -o om
+$ smtc __tests__/testData.txt -o om
 ```
 
 ||initial|Accepting reservations|Reservation accepted|Reserved|final|
