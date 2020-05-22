@@ -1,8 +1,9 @@
 {
   "name": "smtc",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A test case generator from state machine diagram",
   "main": "src/smtc.js",
+  "bin": "bin/index.js",
   "scripts": {
     "test": "npx jest",
     "docs": "npx jsdoc2md -c jsdoc.conf.json src/smtc.js  > DOCS.md"
