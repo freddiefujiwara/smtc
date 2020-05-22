@@ -75,10 +75,19 @@ class Smtc {
   oneStepCoverage(){
     const oneStep = new Array();
     //initialize oneStep
-    this.matrix.forEach(() => {
+    this.matrix.forEach((v,y) => {
       const row = new Array();
-      this.matrix.forEach(() => {
-        row.push(new Array());
+      v.forEach((h,x) => {
+        const result = new Array();
+        for(let i = 0; i < v.length ; ++i){
+          if(h.length > 0 && this.matrix[i][x] > 0){
+            result.push(`${JSON.stringify(h)} x ${JSON.stringify(this.matrix[i][x])}`);
+          }
+        }
+        if(result.filter((a) => a.length > 0).join("+").length > 0){
+          console.log(`${this.states[y]}->${this.states[x]} = `+result.filter((a) => a.length > 0).join("+"));
+        }
+        row.push(result.filter((a) => a.length > 0).join("+"));
       });
       oneStep.push(row);
     })
