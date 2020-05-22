@@ -66,6 +66,25 @@ class Smtc {
     return this;
   }
   /**
+   * calculate 1 step coverage
+   * @public
+   * @returns {Array} oneStepCoverage culculated coverage
+   * @desc
+   * This method can be divided into a first half and a second half.
+   */
+  oneStepCoverage(){
+    const oneStep = new Array();
+    //initialize oneStep
+    this.matrix.forEach(() => {
+      const row = new Array();
+      this.matrix.forEach(() => {
+        row.push(new Array());
+      });
+      oneStep.push(row);
+    })
+    return oneStep;
+  }
+  /**
    * print test sets to console
    * @param {Array} testSets Generated test sets
    * @public

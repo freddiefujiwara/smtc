@@ -54,12 +54,25 @@ describe('Smtc', () => {
       [0,0,0,0,0,0,0,0]
     ]);
     expect(s.matrix).toStrictEqual([
-          [ [   ], [0   ], [   ], [   ], [   ] ],
-          [ [   ], [    ], [ 1 ], [   ], [   ] ],
-          [ [   ], [4, 5], [   ], [ 2 ], [   ] ],
-          [ [   ], [6   ], [ 3 ], [   ], [ 7 ] ],
-          [ [   ], [    ], [   ], [   ], [   ] ]
-        ]);
+      [ [   ], [0   ], [   ], [   ], [   ] ],
+      [ [   ], [    ], [ 1 ], [   ], [   ] ],
+      [ [   ], [4, 5], [   ], [ 2 ], [   ] ],
+      [ [   ], [6   ], [ 3 ], [   ], [ 7 ] ],
+      [ [   ], [    ], [   ], [   ], [   ] ]
+    ]);
+  });
+  it(' oneStepCoverage() : can calculate 1 step coverage', () => {
+    const s = new Smtc();
+    s.readFile('__tests__/testData.txt')
+      .initialize();
+    expect(s.oneStepCoverage).toBeInstanceOf(Function);
+    expect(s.oneStepCoverage()).toStrictEqual([
+      [ [  ], [  ], [  ], [  ], [  ] ],
+      [ [  ], [  ], [  ], [  ], [  ] ],
+      [ [  ], [  ], [  ], [  ], [  ] ],
+      [ [  ], [  ], [  ], [  ], [  ] ],
+      [ [  ], [  ], [  ], [  ], [  ] ]
+    ]);
   });
   it(' _clean() : can clean all parameters', () => {
     const s = new Smtc();
