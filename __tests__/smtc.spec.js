@@ -68,18 +68,20 @@ describe('Smtc', () => {
       .initialize();
     expect(s.oneStepCoverage).toBeInstanceOf(Function);
     const oneStep = s.oneStepCoverage();
-    console.log(s.states);
-    console.log(s.events);
-    console.log(oneStep);
-    /*
     expect(s.oneStepCoverage()).toStrictEqual([
-      [ [  ], [  ], [  ], [  ], [  ] ],
-      [ [  ], [  ], [  ], [  ], [  ] ],
-      [ [  ], [  ], [  ], [  ], [  ] ],
-      [ [  ], [  ], [  ], [  ], [  ] ],
-      [ [  ], [  ], [  ], [  ], [  ] ]
+      [[],[           ],[[0,1]            ],[     ],[     ]],
+      [[],[[1,4],[1,5]],[                 ],[[1,2]],[     ]],
+      [[],[[2,6]      ],[[4,1],[5,1],[2,3]],[     ],[[2,7]]],
+      [[],[[3,4],[3,5]],[[6,1]            ],[[3,2]],[     ]],
+      [[],[           ],[                 ],[     ],[     ]]
     ]);
-    */
+  });
+  it(' printOneStep(oneStepCoverage) : can print all paths', () => {
+    const s = new Smtc();
+    s.readFile('__tests__/testData.txt')
+      .initialize();
+    expect(s.printOneStep).toBeInstanceOf(Function);
+    s.printOneStep(s.oneStepCoverage());
   });
   it(' _clean() : can clean all parameters', () => {
     const s = new Smtc();

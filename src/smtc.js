@@ -38,7 +38,7 @@ class Smtc {
     this.json = this.smcat.render(this.contents,{outputType: "json"});
     this.states = this.json.states.map((s) => s.name);
     this.json.transitions.forEach((t)=> {
-      this.events.push(t.event || "<None>");
+      this.events.push(t.event || "[None]");
     });
     //initialize this.transitions
     this.states.forEach(() => {
@@ -57,7 +57,7 @@ class Smtc {
       this.matrix.push(row);
     })
     this.json.transitions.forEach((t)=> {
-      const event = t.event || "<None>";
+      const event = t.event || "[None]";
       this.transitions[this.states.indexOf(t.from)][this.events.indexOf(event)]
         = this.states.indexOf(t.to);
       this.matrix[this.states.indexOf(t.from)][this.states.indexOf(t.to)]
@@ -74,31 +74,54 @@ class Smtc {
    */
   oneStepCoverage(){
     const oneStep = new Array();
-    //initialize oneStep
+    // this.matrix * this.matrix
     this.matrix.forEach((v,y) => {
-      const row = new Array();
+      oneStep.push(new Array());
       v.forEach((h,x) => {
-        const result = new Array();
-        for(let i = 0; i < v.length ; ++i){
-          if(h.length > 0 && this.matrix[i][x] > 0){
-            result.push(`${JSON.stringify(h)} x ${JSON.stringify(this.matrix[i][x])}`);
+        oneStep[y].push(new Array());
+        v.forEach((h2,x2) => {
+          // push events if the path exists
+          if(this.matrix[y][x2].length > 0 && this.matrix[x2][x].length > 0){
+            const events = new Array();
+            this.matrix[y][x2].forEach((e1)=>{
+              this.matrix[x2][x].forEach((e2)=>{
+                events.push([e1,e2]);
+              });
+            });
+            events.forEach((e) => {
+              oneStep[y][x].push(e);
+            });
           }
-        }
-        if(result.filter((a) => a.length > 0).join("+").length > 0){
-          console.log(`${this.states[y]}->${this.states[x]} = `+result.filter((a) => a.length > 0).join("+"));
-        }
-        row.push(result.filter((a) => a.length > 0).join("+"));
+        });
       });
-      oneStep.push(row);
     })
     return oneStep;
   }
   /**
    * print test sets to console
-   * @param {Array} testSets Generated test sets
+   * @param {Array} oneStepCoverage one step coverage
    * @public
    */
-  printResult(testSets){
+  printOneStep(oneStepCoverage){
+    console.log(`|#|State#1|Event#1|State#2|Event#2|State#3|`);
+    console.log(`|:--|:--|:--|:--|:--|:--|`);
+    let no = 0;
+    this.states.forEach((from,y) => {
+      this.states.forEach((to,x) => {
+        if(oneStepCoverage[y][x].length > 0){
+          oneStepCoverage[y][x].forEach((path) => {
+            let middleState = 0;
+            this.matrix[y].forEach((events,i) => {
+              if(events.indexOf(path[0]) !== -1){
+                middleState = i;
+              }
+            });
+            console.log(`|${no}|${from}|${path.map((p)=>this.events[p]).join(`|${this.states[middleState]}|`)}|${to}|`);
+            no++;
+          });
+        }
+      });
+    });
   }
   /**
    * PRIVATE:clean up all parameters
