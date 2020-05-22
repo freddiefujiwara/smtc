@@ -1,4 +1,7 @@
-const Smtc = require('../src/smtc');
+//const Smtc = require('../src/smtc');
+const fs = require('fs');
+const path = require('path');
+const Smtc = eval(fs.readFileSync(path.join(__dirname,'../dist/smtc.js'),'utf8'));
 
 describe('Smtc', () => {
   it(' constructor() : can create new instance', () => {
@@ -6,27 +9,21 @@ describe('Smtc', () => {
     expect(s).not.toBeNull();
     expect(s).toBeInstanceOf(Smtc);
   });
-  it(' readFile(file) : can read all strings from file', () => {
+  it(' setContents(file) : can read all strings from file', () => {
     const s = new Smtc();
-    expect(s.readFile).toBeInstanceOf(Function);
-    expect(s.readFile('__tests__/testData.txt')).toBeInstanceOf(Smtc);
+    expect(s.setContents).toBeInstanceOf(Function);
+    expect(s.setContents(fs.readFileSync('__tests__/testData.txt','utf8'))).toBeInstanceOf(Smtc);
     expect(s.contents).not.toBe("");
     // no such file or directory
+    s.setContents("syntax error----");
     const t = () => {
-      const si = new Smtc();
-      si.readFile('__tests__/testData.csv');
-    };
-    expect(t).toThrow(/no such file or directory/);
-    s.contents = "syntax error;";
-    // no such file or directory
-    const t2 = () => {
       s.initialize();
     };
-    expect(t2).toThrow(/Expected/);
+    expect(t).toThrow(/Expected/);
   });
   it(' initialize() : can initialize from this.contents', () => {
     const s = new Smtc();
-    s.readFile('__tests__/testData.txt');
+    s.setContents(fs.readFileSync('__tests__/testData.txt','utf8'));
     expect(s.initialize).toBeInstanceOf(Function);
     expect(s.initialize()).toBeInstanceOf(Smtc);
     expect(s.events).toStrictEqual([
@@ -64,7 +61,7 @@ describe('Smtc', () => {
   });
   it(' oneStepCoverage() : can calculate 1 step coverage', () => {
     const s = new Smtc();
-    s.readFile('__tests__/testData.txt')
+    s.setContents(fs.readFileSync('__tests__/testData.txt','utf8'))
       .initialize();
     expect(s.oneStepCoverage).toBeInstanceOf(Function);
     const oneStep = s.oneStepCoverage();
@@ -78,7 +75,7 @@ describe('Smtc', () => {
   });
   it(' printOneStep(oneStepCoverage) : can print all paths', () => {
     const s = new Smtc();
-    s.readFile('__tests__/testData.txt')
+    s.setContents(fs.readFileSync('__tests__/testData.txt','utf8'))
       .initialize();
     expect(s.printDiagram).toBeInstanceOf(Function);
     expect(s.printTransitions).toBeInstanceOf(Function);
@@ -94,7 +91,7 @@ describe('Smtc', () => {
     expect(s.states.length).toBe(0);
     expect(s.transitions.length).toBe(0);
     expect(s.matrix.length).toBe(0);
-    s.readFile('__tests__/testData.txt')
+    s.setContents(fs.readFileSync('__tests__/testData.txt','utf8'))
       .initialize();
     s._clean();
     expect(s.json).toBe("");

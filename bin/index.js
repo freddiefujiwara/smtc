@@ -18,13 +18,11 @@ if (argv['_'].length < 1 || typeof argv['h'] !== 'undefined'){
 }
 
 const fs = require('fs');
-let filter = undefined;
-if (typeof argv['f'] === 'string'){
-  filter = eval(fs.readFileSync(argv['f'], 'utf8'));
-}
-const smtc = require('../src/smtc');
-const s = new smtc();
-const oneStepCoverage = s.readFile(argv['_'][0])
+const path = require('path');
+// require stmc.js
+const Smtc = eval(fs.readFileSync(path.join(__dirname,'../dist/smtc.js'),'utf8'));
+const s = new Smtc();
+const oneStepCoverage = s.setContents(require('fs').readFileSync(argv['_'][0],'utf8'))
   .initialize()
   .oneStepCoverage();
 switch(argv['o']){

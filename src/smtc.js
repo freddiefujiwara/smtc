@@ -15,15 +15,14 @@ class Smtc {
     this._clean();
   }
   /**
-   * store content from file
-   * @param {string} file Target File
+   * store content from arguments
+   * @param {string} contents Target Contents
    * @returns {Smtc} this This object
    * @desc
    * When you want to output the state machine of the folloing Parameters and Parameter Values
    */
-  readFile(file){
-    const fs = require('fs');
-    this.contents = fs.readFileSync(file, 'utf8').trim();
+  setContents(contents){
+    this.contents = contents;
     return this;
   }
   /**
@@ -203,8 +202,4 @@ class Smtc {
   }
 }
 
-if (typeof module !== 'undefined' && typeof module.exports !== 'undefined'){
-  module.exports = Smtc;
-} else {
-  window.Smtc = Smtc;
-}
+module.exports = Smtc;
