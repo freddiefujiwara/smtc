@@ -98,7 +98,58 @@ class Smtc {
     return oneStep;
   }
   /**
-   * print test sets to console
+   * print diagram
+   * @public
+   */
+  printDiagram(){
+    console.log(this.smcat.render(this.contents,{outputType: "svg"}));
+  }
+  /**
+   * print transitions
+   * @public
+   */
+  printTransitions(){
+    console.log(`||${this.events.join("|")}|`);
+    console.log(`|:--|${this.events.map(()=>":--").join("|")}|`);
+    this.transitions.forEach((states,y) => {
+        console.log(`|**${this.states[y]}**|${states.map((s) => s > 0 ? this.states[s] : "").join("|")}|`);
+    });
+  }
+  /**
+   * print zero step cases
+   * @public
+   */
+  printZeroStep(){
+    console.log(`|#|State#1|Event#1|State#2|`);
+    console.log(`|:--|:--|:--|:--|`);
+    let no = 0;
+    this.states.forEach((from,y) => {
+      this.states.forEach((to,x) => {
+        if(this.matrix[y][x].length > 0){
+          this.matrix[y][x].forEach((e) => {
+            console.log(`|${no}|${from}|${this.events[e]}|${to}|`);
+            no++;
+          });
+        }
+      });
+    });
+  }
+  /**
+   * print zero step matrix
+   * @param {Array} oneStepCoverage one step coverage
+   * @public
+   */
+  printZeroStepMatrix(){
+    console.log(`||${this.states.join("|")}|`);
+    console.log(`|:--|${this.states.map(()=>":--").join("|")}|`);
+    this.matrix.forEach((row,y)=>{
+      console.log(`|**${this.states[y]}**|${row.map((r) => {
+        return r.map((n) => this.events[n]).join(",");
+      }).join("|")}|`);
+    });
+  }
+  /**
+   * print one step cases
    * @param {Array} oneStepCoverage one step coverage
    * @public
    */
@@ -121,6 +172,23 @@ class Smtc {
           });
         }
       });
+    });
+  }
+  /**
+   * print one step matrix
+   * @param {Array} oneStepCoverage one step coverage
+   * @public
+   */
+  printOneStepMatrix(oneStepCoverage){
+    console.log(`||${this.states.join("|")}|`);
+    console.log(`|:--|${this.states.map(()=>":--").join("|")}|`);
+    oneStepCoverage.forEach((row,y)=>{
+      console.log(`|**${this.states[y]}**|${row.map((r) => {
+        if(r.length < 1) {
+          return "";
+        }
+        return r.map((p) => p.map((n) => this.events[n]).join(" -> ")).join(",");
+      }).join("|")}|`);
     });
   }
   /**

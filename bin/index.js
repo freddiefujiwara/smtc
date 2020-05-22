@@ -24,8 +24,26 @@ if (typeof argv['f'] === 'string'){
 }
 const smtc = require('../src/smtc');
 const s = new smtc();
-s.readFile(argv['_'][0])
-  .initialize();
-s.printOneStep(
-  s.oneStepCoverage()
-);
+const oneStepCoverage = s.readFile(argv['_'][0])
+  .initialize()
+  .oneStepCoverage();
+switch(argv['o']){
+  case "z":
+    s.printZeroStep();
+    break;
+  case "zm":
+    s.printZeroStepMatrix();
+    break;
+  case "o":
+    s.printOneStep(oneStepCoverage);
+    break;
+  case "om":
+    s.printOneStepMatrix(oneStepCoverage);
+    break;
+  case "d":
+    s.printDiagram();
+    break;
+  default:
+    s.printTransitions();
+    break;
+}

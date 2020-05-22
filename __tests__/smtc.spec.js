@@ -30,7 +30,7 @@ describe('Smtc', () => {
     expect(s.initialize).toBeInstanceOf(Function);
     expect(s.initialize()).toBeInstanceOf(Smtc);
     expect(s.events).toStrictEqual([
-      '<None>'                ,// 0
+      '[None]'                ,// 0
       'reserve'               ,// 1
       'approve'               ,// 2
       'cancel approval'       ,// 3
@@ -80,8 +80,12 @@ describe('Smtc', () => {
     const s = new Smtc();
     s.readFile('__tests__/testData.txt')
       .initialize();
+    expect(s.printDiagram).toBeInstanceOf(Function);
+    expect(s.printTransitions).toBeInstanceOf(Function);
     expect(s.printOneStep).toBeInstanceOf(Function);
-    s.printOneStep(s.oneStepCoverage());
+    expect(s.printOneStepMatrix).toBeInstanceOf(Function);
+    expect(s.printZeroStep).toBeInstanceOf(Function);
+    expect(s.printZeroStepMatrix).toBeInstanceOf(Function);
   });
   it(' _clean() : can clean all parameters', () => {
     const s = new Smtc();
