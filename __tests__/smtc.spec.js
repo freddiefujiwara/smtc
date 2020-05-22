@@ -30,14 +30,14 @@ describe('Smtc', () => {
     expect(s.initialize).toBeInstanceOf(Function);
     expect(s.initialize()).toBeInstanceOf(Smtc);
     expect(s.events).toStrictEqual([
-      '<None>',
-      'reserve',
-      'approve',
-      'cancel approval',
-      'reject',
-      'cancel of reservation',
-      'cancel',
-      'car delivered'
+      '[None]'                ,// 0
+      'reserve'               ,// 1
+      'approve'               ,// 2
+      'cancel approval'       ,// 3
+      'reject'                ,// 4
+      'cancel of reservation' ,// 5
+      'cancel'                ,// 6
+      'car delivered'          // 7
     ]);
     expect(s.states).toStrictEqual([
       'initial',
@@ -54,12 +54,38 @@ describe('Smtc', () => {
       [0,0,0,0,0,0,0,0]
     ]);
     expect(s.matrix).toStrictEqual([
-          [ [   ], [0   ], [   ], [   ], [   ] ],
-          [ [   ], [    ], [ 1 ], [   ], [   ] ],
-          [ [   ], [4, 5], [   ], [ 2 ], [   ] ],
-          [ [   ], [6   ], [ 3 ], [   ], [ 7 ] ],
-          [ [   ], [    ], [   ], [   ], [   ] ]
-        ]);
+      //init   //Acpt  //Rsv  //Rsd  //fin
+      [ [   ], [0   ], [   ], [   ], [   ] ], //initial,
+      [ [   ], [    ], [ 1 ], [   ], [   ] ], //Accepting reservations
+      [ [   ], [4, 5], [   ], [ 2 ], [   ] ], //Reservation accepted
+      [ [   ], [6   ], [ 3 ], [   ], [ 7 ] ], //Reserved
+      [ [   ], [    ], [   ], [   ], [   ] ]  //final
+    ]);
+  });
+  it(' oneStepCoverage() : can calculate 1 step coverage', () => {
+    const s = new Smtc();
+    s.readFile('__tests__/testData.txt')
+      .initialize();
+    expect(s.oneStepCoverage).toBeInstanceOf(Function);
+    const oneStep = s.oneStepCoverage();
+    expect(s.oneStepCoverage()).toStrictEqual([
+      [[],[           ],[[0,1]            ],[     ],[     ]],
+      [[],[[1,4],[1,5]],[                 ],[[1,2]],[     ]],
+      [[],[[2,6]      ],[[4,1],[5,1],[2,3]],[     ],[[2,7]]],
+      [[],[[3,4],[3,5]],[[6,1]            ],[[3,2]],[     ]],
+      [[],[           ],[                 ],[     ],[     ]]
+    ]);
+  });
+  it(' printOneStep(oneStepCoverage) : can print all paths', () => {
+    const s = new Smtc();
+    s.readFile('__tests__/testData.txt')
+      .initialize();
+    expect(s.printDiagram).toBeInstanceOf(Function);
+    expect(s.printTransitions).toBeInstanceOf(Function);
+    expect(s.printOneStep).toBeInstanceOf(Function);
+    expect(s.printOneStepMatrix).toBeInstanceOf(Function);
+    expect(s.printZeroStep).toBeInstanceOf(Function);
+    expect(s.printZeroStepMatrix).toBeInstanceOf(Function);
   });
   it(' _clean() : can clean all parameters', () => {
     const s = new Smtc();

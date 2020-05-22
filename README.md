@@ -1,37 +1,104 @@
-## Welcome to GitHub Pages
+# smtc
+Try it in your browser! [TRY IT NOW](https://freddiefujiwara.github.io/smtc/#input)
 
-You can use the [editor on GitHub](https://github.com/freddiefujiwara/smtc/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+Document is [here](https://github.com/freddiefujiwara/smtc/blob/master/DOCS.md)
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+# install
 
-### Markdown
+``` shell
+$ npm i -g smtc
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
 ```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+# Usage
+## sample data
+![alt text](https://raw.githubusercontent.com/freddiefujiwara/smtc/master/__tests__/testData.svg)
 
-### Jekyll Themes
+``` shell
+$ cat __tests__/testData.txt
+initial                  => "Accepting reservations" ;
+"Accepting reservations" => "Reservation accepted"   : reserve ;
+"Reservation accepted"   => "Reserved"               : approve;
+"Reserved"               => "Reservation accepted"   : cancel approval;
+"Reservation accepted"   => "Accepting reservations" : reject;
+"Reservation accepted"   => "Accepting reservations" : cancel of reservation;
+"Reserved"               => "Accepting reservations" : cancel;
+"Reserved"               => final                    : car delivered;
+```
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/freddiefujiwara/smtc/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+## Transition matrix
+```shell
+./bin/index.js __tests__/testData.txt
+```
 
-### Support or Contact
+||[None]|reserve|approve|cancel approval|reject|cancel of reservation|cancel|car delivered|
+|:--|:--|:--|:--|:--|:--|:--|:--|:--|
+|**initial**|Accepting reservations||||||||
+|**Accepting reservations**||Reservation accepted|||||||
+|**Reservation accepted**|||Reserved||Accepting reservations|Accepting reservations|||
+|**Reserved**||||Reservation accepted|||Accepting reservations|final|
+|**final**|||||||||
 
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+## zero sep cases
+
+```shell
+./bin/index.js __tests__/testData.txt -o z
+```
+
+|#|State#1|Event#1|State#2|
+|:--|:--|:--|:--|
+|0|initial|[None]|Accepting reservations|
+|1|Accepting reservations|reserve|Reservation accepted|
+|2|Reservation accepted|reject|Accepting reservations|
+|3|Reservation accepted|cancel of reservation|Accepting reservations|
+|4|Reservation accepted|approve|Reserved|
+|5|Reserved|cancel|Accepting reservations|
+|6|Reserved|cancel approval|Reservation accepted|
+|7|Reserved|car delivered|final|
+
+## zero sep matrix
+```shell
+./bin/index.js __tests__/testData.txt -o zm
+```
+
+||initial|Accepting reservations|Reservation accepted|Reserved|final|
+|:--|:--|:--|:--|:--|:--|
+|**initial**||[None]||||
+|**Accepting reservations**|||reserve|||
+|**Reservation accepted**||reject,cancel of reservation||approve||
+|**Reserved**||cancel|cancel approval||car delivered|
+|**final**||||||
+
+## one step cases
+```shell
+./bin/index.js __tests__/testData.txt -o o
+```
+
+|#|State#1|Event#1|State#2|Event#2|State#3|
+|:--|:--|:--|:--|:--|:--|
+|0|initial|[None]|Accepting reservations|reserve|Reservation accepted|
+|1|Accepting reservations|reserve|Reservation accepted|reject|Accepting reservations|
+|2|Accepting reservations|reserve|Reservation accepted|cancel of reservation|Accepting reservations|
+|3|Accepting reservations|reserve|Reservation accepted|approve|Reserved|
+|4|Reservation accepted|approve|Reserved|cancel|Accepting reservations|
+|5|Reservation accepted|reject|Accepting reservations|reserve|Reservation accepted|
+|6|Reservation accepted|cancel of reservation|Accepting reservations|reserve|Reservation accepted|
+|7|Reservation accepted|approve|Reserved|cancel approval|Reservation accepted|
+|8|Reservation accepted|approve|Reserved|car delivered|final|
+|9|Reserved|cancel approval|Reservation accepted|reject|Accepting reservations|
+|10|Reserved|cancel approval|Reservation accepted|cancel of reservation|Accepting reservations|
+|11|Reserved|cancel|Accepting reservations|reserve|Reservation accepted|
+|12|Reserved|cancel approval|Reservation accepted|approve|Reserved|
+
+## one step matrix
+```shell
+./bin/index.js __tests__/testData.txt -o om
+```
+
+||initial|Accepting reservations|Reservation accepted|Reserved|final|
+|:--|:--|:--|:--|:--|:--|
+|**initial**|||[None] -> reserve|||
+|**Accepting reservations**||reserve -> reject,reserve -> cancel of reservation||reserve -> approve||
+|**Reservation accepted**||approve -> cancel|reject -> reserve,cancel of reservation -> reserve,approve -> cancel approval||approve -> car delivered|
+|**Reserved**||cancel approval -> reject,cancel approval -> cancel of reservation|cancel -> reserve|cancel approval -> approve||
+|**final**||||||
