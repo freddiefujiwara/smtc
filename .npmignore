@@ -4,3 +4,4 @@ DOCS.md
 _includes/
 jsdoc.conf.json
 __tests__/
+src/
