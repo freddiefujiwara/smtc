@@ -10,8 +10,21 @@ $ npm i -g smtc
 ```
 
 # Usage
+## sample data
+``` shell
+$ cat __tests__/testData.txt
+initial                  => "Accepting reservations" ;
+"Accepting reservations" => "Reservation accepted"   : reserve ;
+"Reservation accepted"   => "Reserved"               : approve;
+"Reserved"               => "Reservation accepted"   : cancel approval;
+"Reservation accepted"   => "Accepting reservations" : reject;
+"Reservation accepted"   => "Accepting reservations" : cancel of reservation;
+"Reserved"               => "Accepting reservations" : cancel;
+"Reserved"               => final                    : car delivered;
+```
+
 ## Transition matrix
-```shell``
+```shell
 ./bin/index.js __tests__/testData.txt
 
 ```
