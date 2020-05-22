@@ -12,7 +12,7 @@ if (argv['_'].length < 1 || typeof argv['h'] !== 'undefined'){
   console.error(`Report bugs: ${pkg.bugs.url}`);
   console.error("================================================================================");
   console.error("");
-  console.error("Usage: smtc [-h] <file>");
+  console.error("Usage: smtc [-h] <file> [-o <z|zm|o|om|d|t:default>]");
   console.error("");
   process.exit(1);
 }
