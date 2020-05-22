@@ -1,3 +1,5 @@
+![Node.js CI](https://github.com/freddiefujiwara/smtc/workflows/Node.js%20CI/badge.svg)[![npm version](https://badge.fury.io/js/smtc.svg)](https://badge.fury.io/js/smtc)
+
 # smtc
 Try it in your browser! [TRY IT NOW](https://freddiefujiwara.github.io/smtc/#input)
 
