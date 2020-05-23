@@ -1,0 +1,21 @@
+<h1>Try it</h1>
+<h2>input</h2>
+<textarea id="inputscript" style="margin: 0px; width: 100%; height: 135px;">
+initial                  => "Accepting reservations" ;
+"Accepting reservations" => "Reservation accepted"   : reserve ;
+"Reservation accepted"   => "Reserved"               : approve;
+"Reserved"               => "Reservation accepted"   : cancel approval;
+"Reservation accepted"   => "Accepting reservations" : reject;
+"Reservation accepted"   => "Accepting reservations" : cancel of reservation;
+"Reserved"               => "Accepting reservations" : cancel;
+"Reserved"               => final                    : car delivered;
+</textarea>
+<h2>output</h2>
+<div id="output" style="margin: 0px; width: 100%; height: 500px;"></div>
+<textarea id="transitions" style="margin: 0px; width: 100%; height: 135px;"></textarea>
+<textarea id="zero" style="margin: 0px; width: 100%; height: 135px;"></textarea>
+<textarea id="zeromatrix" style="margin: 0px; width: 100%; height: 135px;"></textarea>
+<textarea id="one" style="margin: 0px; width: 100%; height: 135px;"></textarea>
+<textarea id="onematrix" style="margin: 0px; width: 100%; height: 135px;"></textarea>
+<script src="https://state-machine-cat.js.org/smcat-online-interpreter.min.js"></script>
+<script src="https://freddiefujiwara.github.io/node-stmc/src/stmc.js"></script>

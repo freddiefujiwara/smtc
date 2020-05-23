@@ -103,3 +103,5 @@ $ smtc __tests__/testData.txt -o om
 |**Reservation accepted**||approve -> cancel|reject -> reserve,cancel of reservation -> reserve,approve -> cancel approval||approve -> car delivered|
 |**Reserved**||cancel approval -> reject,cancel approval -> cancel of reservation|cancel -> reserve|cancel approval -> approve||
 |**final**||||||
+
+{% include form.html %}
