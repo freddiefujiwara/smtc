@@ -11,12 +11,17 @@
   "Reserved"               => final                    : car delivered;
 </textarea>
 <button id="render">Render</button>
-<h2>output</h2>
-<div id="output" style="margin: 0px; width: 100%; height: 500px;background-color: transparent;"></div>
+<h2>Diagram</h2>
+<div id="diagram" style="margin: 0px; width: 100%; height: 500px;background-color: transparent;"></div>
+<h2>Transitions</h2>
 <textarea id="transitions" style="margin: 0px; width: 100%; height: 135px;"></textarea>
+<h2>Zero switch cases</h2>
 <textarea id="zero" style="margin: 0px; width: 100%; height: 135px;"></textarea>
+<h2>Zero switch matrix</h2>
 <textarea id="zeromatrix" style="margin: 0px; width: 100%; height: 135px;"></textarea>
+<h2>One switch cases</h2>
 <textarea id="one" style="margin: 0px; width: 100%; height: 135px;"></textarea>
+<h2>One switch matrix</h2>
 <textarea id="onematrix" style="margin: 0px; width: 100%; height: 135px;"></textarea>
 <script src="https://freddiefujiwara.github.io/smtc/src/smtc.js"></script>
 <script src="https://freddiefujiwara.github.io/smtc/src/webpack.min.js"></script>
@@ -25,18 +30,18 @@
   //<![CDATA[
   $("#render").click(()=>{
     const inputscript = $("#inputscript").val();
-    $("#output").html(smcat.render(inputscript));
+    $("#diagram").html(smcat.render(inputscript));
     const s = new Smtc(smcat);
     const oneStepCoverage = s.setContents(inputscript)
       .initialize()
       .oneStepCoverage();
 
+    let output = new Array();
     const log = console.log;
     console.log = function(line){
       output.push(line);
-    }
+    };
 
-    let output = new Array();
     s.printTransitions();
     $("#transitions").val(output.join("\n"));
 
@@ -46,7 +51,7 @@
 
     output = new Array();
     s.printZeroStepMatrix();
-    $("#zeromatrix").val(
+    $("#zeromatrix").val(output.join("\n"));
 
     output = new Array();
     s.printOneStep();
