@@ -8,7 +8,7 @@ Overall flow is the following</p>
 
 * [Smtc](#Smtc)
     * [new Smtc()](#new_Smtc_new)
-    * [.readFile(file)](#Smtc+readFile) ⇒ [<code>Smtc</code>](#Smtc)
+    * [.setContents(contents)](#Smtc+setContents) ⇒ [<code>Smtc</code>](#Smtc)
     * [.initialize()](#Smtc+initialize) ⇒ [<code>Smtc</code>](#Smtc)
     * [.oneStepCoverage()](#Smtc+oneStepCoverage) ⇒ <code>Array</code>
     * [.printDiagram()](#Smtc+printDiagram)
@@ -24,9 +24,9 @@ Overall flow is the following</p>
 ### new Smtc()
 <p>this._clean()</p>
 
-<a name="Smtc+readFile"></a>
+<a name="Smtc+setContents"></a>
 
-### smtc.readFile(file) ⇒ [<code>Smtc</code>](#Smtc)
+### smtc.setContents(contents) ⇒ [<code>Smtc</code>](#Smtc)
 <p>When you want to output the state machine of the folloing Parameters and Parameter Values</p>
 
 **Kind**: instance method of [<code>Smtc</code>](#Smtc)  
@@ -34,7 +34,7 @@ Overall flow is the following</p>
 
 | Param | Type | Description |
 | --- | --- | --- |
-| file | <code>string</code> | <p>Target File</p> |
+| contents | <code>string</code> | <p>Target Contents</p> |
 
 <a name="Smtc+initialize"></a>
 
