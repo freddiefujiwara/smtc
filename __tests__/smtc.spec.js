@@ -1,6 +1,6 @@
-//const Smtc = require('../src/smtc');
 const fs = require('fs');
-const Smtc = require('../dist/smtc');
+//const Smtc = require('../dist/smtc');
+const Smtc = require('../src/smtc');
 //const path = require('path');
 //const Smtc = eval(fs.readFileSync(path.join(__dirname,'../dist/smtc.js'),'utf8'));
 
