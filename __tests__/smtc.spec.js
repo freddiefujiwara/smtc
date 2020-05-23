@@ -1,17 +1,15 @@
 const fs = require('fs');
-//const Smtc = require('../dist/smtc');
+const smcat = require("state-machine-cat");
 const Smtc = require('../src/smtc');
-//const path = require('path');
-//const Smtc = eval(fs.readFileSync(path.join(__dirname,'../dist/smtc.js'),'utf8'));
 
 describe('Smtc', () => {
   it(' constructor() : can create new instance', () => {
-    const s = new Smtc();
+    const s = new Smtc(smcat);
     expect(s).not.toBeNull();
     expect(s).toBeInstanceOf(Smtc);
   });
   it(' setContents(file) : can read all strings from file', () => {
-    const s = new Smtc();
+    const s = new Smtc(smcat);
     expect(s.setContents).toBeInstanceOf(Function);
     expect(s.setContents(fs.readFileSync('__tests__/testData.txt','utf8'))).toBeInstanceOf(Smtc);
     expect(s.contents).not.toBe("");
@@ -23,7 +21,7 @@ describe('Smtc', () => {
     expect(t).toThrow(/Expected/);
   });
   it(' initialize() : can initialize from this.contents', () => {
-    const s = new Smtc();
+    const s = new Smtc(smcat);
     s.setContents(fs.readFileSync('__tests__/testData.txt','utf8'));
     expect(s.initialize).toBeInstanceOf(Function);
     expect(s.initialize()).toBeInstanceOf(Smtc);
@@ -61,7 +59,7 @@ describe('Smtc', () => {
     ]);
   });
   it(' oneStepCoverage() : can calculate 1 step coverage', () => {
-    const s = new Smtc();
+    const s = new Smtc(smcat);
     s.setContents(fs.readFileSync('__tests__/testData.txt','utf8'))
       .initialize();
     expect(s.oneStepCoverage).toBeInstanceOf(Function);
@@ -75,7 +73,7 @@ describe('Smtc', () => {
     ]);
   });
   it(' printOneStep(oneStepCoverage) : can print all paths', () => {
-    const s = new Smtc();
+    const s = new Smtc(smcat);
     s.setContents(fs.readFileSync('__tests__/testData.txt','utf8'))
       .initialize();
     expect(s.printDiagram).toBeInstanceOf(Function);
@@ -86,7 +84,7 @@ describe('Smtc', () => {
     expect(s.printZeroStepMatrix).toBeInstanceOf(Function);
   });
   it(' _clean() : can clean all parameters', () => {
-    const s = new Smtc();
+    const s = new Smtc(smcat);
     expect(s.json).toBe("");
     expect(s.events.length).toBe(0);
     expect(s.states.length).toBe(0);

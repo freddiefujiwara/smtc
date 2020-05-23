@@ -10,8 +10,8 @@ class Smtc {
    * @desc
    * this._clean()
    */
-  constructor(){
-    this.smcat = require("state-machine-cat");
+  constructor(smcat){
+    this.smcat = smcat;
     this._clean();
   }
   /**
@@ -202,4 +202,8 @@ class Smtc {
   }
 }
 
-module.exports = Smtc;
+if (typeof module !== 'undefined' && typeof module.exports !== 'undefined'){
+  module.exports = Smtc;
+} else {
+  window.Smtc = Smtc;
+}

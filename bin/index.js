@@ -18,12 +18,8 @@ if (argv['_'].length < 1 || typeof argv['h'] !== 'undefined'){
 }
 
 const fs = require('fs');
-// require stmc.js
-//const path = require('path');
-//const Smtc = eval(fs.readFileSync(path.join(__dirname,'../dist/smtc.js'),'utf8'));
 const Smtc = require('../src/smtc');
-//const Smtc = require('../dist/smtc');
-const s = new Smtc();
+const s = new Smtc(require("state-machine-cat"));
 const oneStepCoverage = s.setContents(require('fs').readFileSync(argv['_'][0],'utf8'))
   .initialize()
   .oneStepCoverage();
