@@ -206,5 +206,4 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined'){
   module.exports = Smtc;
 } else {
   window.Smtc = Smtc;
-  window.smcat = require("state-machine-cat");
 }

@@ -6,7 +6,7 @@
   "bin": "bin/index.js",
   "scripts": {
     "test": "npx jest",
-    "build": "npx webpack src/smtc.js -o src/webpack.min.js",
+    "build": "npx webpack src/smcat.js -o src/webpack.min.js",
     "docs": "npx jsdoc2md -c jsdoc.conf.json src/smtc.js  > DOCS.md"
   },
   "repository": {
