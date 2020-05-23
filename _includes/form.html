@@ -1,15 +1,16 @@
 <h1>Try it</h1>
 <h2>input</h2>
 <textarea id="inputscript" style="margin: 0px; width: 100%; height: 135px;">
-initial                  => "Accepting reservations" ;
-"Accepting reservations" => "Reservation accepted"   : reserve ;
-"Reservation accepted"   => "Reserved"               : approve;
-"Reserved"               => "Reservation accepted"   : cancel approval;
-"Reservation accepted"   => "Accepting reservations" : reject;
-"Reservation accepted"   => "Accepting reservations" : cancel of reservation;
-"Reserved"               => "Accepting reservations" : cancel;
-"Reserved"               => final                    : car delivered;
+  initial                  => "Accepting reservations" ;
+  "Accepting reservations" => "Reservation accepted"   : reserve ;
+  "Reservation accepted"   => "Reserved"               : approve;
+  "Reserved"               => "Reservation accepted"   : cancel approval;
+  "Reservation accepted"   => "Accepting reservations" : reject;
+  "Reservation accepted"   => "Accepting reservations" : cancel of reservation;
+  "Reserved"               => "Accepting reservations" : cancel;
+  "Reserved"               => final                    : car delivered;
 </textarea>
+<button id="render">Render</button>
 <h2>output</h2>
 <div id="output" style="margin: 0px; width: 100%; height: 500px;background-color: transparent;"></div>
 <textarea id="transitions" style="margin: 0px; width: 100%; height: 135px;"></textarea>
@@ -19,3 +20,43 @@ initial                  => "Accepting reservations" ;
 <textarea id="onematrix" style="margin: 0px; width: 100%; height: 135px;"></textarea>
 <script src="https://freddiefujiwara.github.io/smtc/src/smtc.js"></script>
 <script src="https://freddiefujiwara.github.io/smtc/src/webpack.min.js"></script>
+<script src="https://code.jquery.com/jquery-git.slim.min.js"></script>
+<script type="text/javascript">
+  //<![CDATA[
+  $("#render").click(()=>{
+    const inputscript = $("#inputscript").val();
+    $("#output").html(smcat.render(inputscript));
+    const s = new Smtc(smcat);
+    const oneStepCoverage = s.setContents(inputscript)
+      .initialize()
+      .oneStepCoverage();
+
+    const log = console.log;
+    console.log = function(line){
+      output.push(line);
+    }
+
+    let output = new Array();
+    s.printTransitions();
+    $("#transitions").val(output.join("\n"));
+
+    output = new Array();
+    s.printZeroStep();
+    $("#zero").val(output.join("\n"));
+
+    output = new Array();
+    s.printZeroStepMatrix();
+    $("#zeromatrix").val(
+
+    output = new Array();
+    s.printOneStep();
+    $("#one").val(output.join("\n"));
+
+    output = new Array();
+    s.printOneStepMatrix();
+    $("#onematrix").val(output.join("\n"));
+
+    console.log = log;
+  });
+//]]>
+</script>
