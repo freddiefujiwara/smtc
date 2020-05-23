@@ -14,15 +14,15 @@
 <h2>Diagram</h2>
 <div id="diagram" style="margin: 0px; width: 100%; height: 500px;background-color: transparent;"></div>
 <h2>Transitions</h2>
-<textarea id="transitions" style="margin: 0px; width: 100%; height: 135px;"></textarea>
+<div id="transitions" style="margin: 0px; width: 100%; height: 135px;"></div>
 <h2>Zero switch cases</h2>
-<textarea id="zero" style="margin: 0px; width: 100%; height: 135px;"></textarea>
+<div id="zero" style="margin: 0px; width: 100%; height: 135px;"></div>
 <h2>Zero switch matrix</h2>
-<textarea id="zeromatrix" style="margin: 0px; width: 100%; height: 135px;"></textarea>
+<div id="zeromatrix" style="margin: 0px; width: 100%; height: 135px;"></div>
 <h2>One switch cases</h2>
-<textarea id="one" style="margin: 0px; width: 100%; height: 135px;"></textarea>
+<div id="one" style="margin: 0px; width: 100%; height: 135px;"></div>
 <h2>One switch matrix</h2>
-<textarea id="onematrix" style="margin: 0px; width: 100%; height: 135px;"></textarea>
+<div id="onematrix" style="margin: 0px; width: 100%; height: 135px;"></div>
 <script src="https://freddiefujiwara.github.io/smtc/src/smtc.js"></script>
 <script src="https://freddiefujiwara.github.io/smtc/src/smcat.min.js"></script>
 <script src="https://freddiefujiwara.github.io/smtc/src/markdown.min.js"></script>
@@ -43,24 +43,25 @@
       output.push(line);
     };
 
+    
     s.printTransitions();
-    $("#transitions").val(output.join("\n"));
+    $("#transitions").html(markdown.markdown.toHTML(output.join("\n"),"Maruku"));
 
     output = new Array();
     s.printZeroStep();
-    $("#zero").val(output.join("\n"));
+    $("#zero").html(markdown.markdown.toHTML(output.join("\n"),"Maruku"));
 
     output = new Array();
     s.printZeroStepMatrix();
-    $("#zeromatrix").val(output.join("\n"));
+    $("#zeromatrix").html(markdown.markdown.toHTML(output.join("\n"),"Maruku"));
 
     output = new Array();
     s.printOneStep(oneStepCoverage);
-    $("#one").val(output.join("\n"));
+    $("#one").html(markdown.markdown.toHTML(output.join("\n"),"Maruku"));
 
     output = new Array();
     s.printOneStepMatrix(oneStepCoverage);
-    $("#onematrix").val(output.join("\n"));
+    $("#onematrix").html(markdown.markdown.toHTML(output.join("\n"),"Maruku"));
 
     console.log = log;
   });
