@@ -6,6 +6,7 @@
   "bin": "bin/index.js",
   "scripts": {
     "test": "npx jest",
+    "build": "npx webpack src/smtc.js -o src/webpack.min.js",
     "docs": "npx jsdoc2md -c jsdoc.conf.json src/smtc.js  > DOCS.md"
   },
   "repository": {
@@ -29,7 +30,9 @@
   "homepage": "https://freddiefujiwara.github.io/smtc/",
   "devDependencies": {
     "jest": "^26.0.1",
-    "jsdoc-to-markdown": "^5.0.3"
+    "jsdoc-to-markdown": "^5.0.3",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.11"
   },
   "dependencies": {
     "minimist": "^1.2.5",
