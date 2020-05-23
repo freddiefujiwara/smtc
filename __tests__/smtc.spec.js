@@ -1,7 +1,8 @@
 //const Smtc = require('../src/smtc');
 const fs = require('fs');
-const path = require('path');
-const Smtc = eval(fs.readFileSync(path.join(__dirname,'../dist/smtc.js'),'utf8'));
+const Smtc = require('../dist/smtc');
+//const path = require('path');
+//const Smtc = eval(fs.readFileSync(path.join(__dirname,'../dist/smtc.js'),'utf8'));
 
 describe('Smtc', () => {
   it(' constructor() : can create new instance', () => {

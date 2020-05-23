@@ -22,6 +22,7 @@ const fs = require('fs');
 //const path = require('path');
 //const Smtc = eval(fs.readFileSync(path.join(__dirname,'../dist/smtc.js'),'utf8'));
 const Smtc = require('../src/smtc');
+//const Smtc = require('../dist/smtc');
 const s = new Smtc();
 const oneStepCoverage = s.setContents(require('fs').readFileSync(argv['_'][0],'utf8'))
   .initialize()
