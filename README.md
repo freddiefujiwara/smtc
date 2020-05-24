@@ -14,6 +14,15 @@ $ npm i -g smtc
 ```
 
 # Usage
+## command line
+``` shell
+# -h:help
+# <file>:inputscript
+# -s : switch
+# -t : output type t:transition/m:matrix/c:testcases/d:diagram
+smtc [-h] <file> [-s <0|1|2... (1:default)>] [-t <t|m|c|d (t:default)>]
+```
+
 ## sample data
 ![alt text](https://raw.githubusercontent.com/freddiefujiwara/smtc/master/__tests__/testData.svg)
 
@@ -45,7 +54,7 @@ $ smtc __tests__/testData.txt
 ## zero step cases
 
 ```shell
-$ smtc __tests__/testData.txt -o z
+$ smtc __tests__/testData.txt -t c
 ```
 
 |#|State#1|Event#1|State#2|
@@ -61,7 +70,7 @@ $ smtc __tests__/testData.txt -o z
 
 ## zero step matrix
 ```shell
-$ smtc __tests__/testData.txt -o zm
+$ smtc __tests__/testData.txt -t m
 ```
 
 ||initial|Accepting reservations|Reservation accepted|Reserved|final|
@@ -74,7 +83,7 @@ $ smtc __tests__/testData.txt -o zm
 
 ## one step cases
 ```shell
-$ smtc __tests__/testData.txt -o o
+$ smtc __tests__/testData.txt -t c -s 1
 ```
 
 |#|State#1|Event#1|State#2|Event#2|State#3|
@@ -95,7 +104,7 @@ $ smtc __tests__/testData.txt -o o
 
 ## one step matrix
 ```shell
-$ smtc __tests__/testData.txt -o om
+$ smtc __tests__/testData.txt -t m -s 1
 ```
 
 ||initial|Accepting reservations|Reservation accepted|Reserved|final|

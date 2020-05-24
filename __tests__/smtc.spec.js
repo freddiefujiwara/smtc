@@ -108,24 +108,24 @@ describe('Smtc', () => {
     ]);
     expect(s.matrix.length).toBe(9);
     expect(s.matrix).toStrictEqual([
-      [[],[0],[ ],[  ],[ ],[  ],[  ],[],[]],
-      [[],[ ],[4],[3 ],[ ],[  ],[  ],[],[]],
-      [[],[2],[1],[  ],[3],[  ],[  ],[],[]],
-      [[],[9],[ ],[6 ],[4],[8 ],[  ],[],[]],
-      [[],[ ],[9],[2 ],[1],[  ],[  ],[],[]],
-      [[],[ ],[ ],[  ],[ ],[  ],[15],[],[]],
-      [[],[ ],[ ],[18],[ ],[17],[6 ],[],[]],
-      [[],[9],[ ],[  ],[4],[  ],[  ],[],[]],
-      [[],[ ],[ ],[  ],[ ],[  ],[  ],[],[]]
+      [[],[0 ],[  ],[  ],[  ],[  ],[  ],[],[]],
+      [[],[  ],[4 ],[5 ],[  ],[  ],[  ],[],[]],
+      [[],[2 ],[1 ],[  ],[3 ],[  ],[  ],[],[]],
+      [[],[9 ],[  ],[6 ],[7 ],[8 ],[  ],[],[]],
+      [[],[  ],[12],[11],[10],[  ],[  ],[],[]],
+      [[],[  ],[  ],[  ],[  ],[  ],[15],[],[]],
+      [[],[  ],[  ],[18],[  ],[17],[16],[],[]],
+      [[],[14],[  ],[  ],[13],[  ],[  ],[],[]],
+      [[],[  ],[  ],[  ],[  ],[  ],[  ],[],[]]
     ]);
   });
-  it(' oneStepCoverage() : can calculate 1 step coverage', () => {
+  it(' nSwitchCoverage() : can calculate 1 step coverage', () => {
     const s = new Smtc();
     s.setContents(fs.readFileSync('__tests__/testData.txt','utf8'))
       .initialize();
-    expect(s.oneStepCoverage).toBeInstanceOf(Function);
-    const oneStep = s.oneStepCoverage();
-    expect(s.oneStepCoverage()).toStrictEqual([
+    expect(s.nSwitchCoverage).toBeInstanceOf(Function);
+    const oneSwitch = s.nSwitchCoverage(1);
+    expect(oneSwitch).toStrictEqual([
       [[],[           ],[[0,1]            ],[     ],[     ]],
       [[],[[1,4],[1,5]],[                 ],[[1,2]],[     ]],
       [[],[[2,6]      ],[[4,1],[5,1],[2,3]],[     ],[[2,7]]],
@@ -133,16 +133,47 @@ describe('Smtc', () => {
       [[],[           ],[                 ],[     ],[     ]]
     ]);
   });
-  it(' printOneStep(oneStepCoverage) : can print all paths', () => {
+  it(' printXXX() : can print all methods', () => {
     const s = new Smtc(smcat);
     s.setContents(fs.readFileSync('__tests__/testData.txt','utf8'))
       .initialize();
+
     expect(s.printDiagram).toBeInstanceOf(Function);
     expect(s.printTransitions).toBeInstanceOf(Function);
-    expect(s.printOneStep).toBeInstanceOf(Function);
-    expect(s.printOneStepMatrix).toBeInstanceOf(Function);
-    expect(s.printZeroStep).toBeInstanceOf(Function);
-    expect(s.printZeroStepMatrix).toBeInstanceOf(Function);
+    expect(s.printNSwitch).toBeInstanceOf(Function);
+    expect(s.printNSwitchMatrix).toBeInstanceOf(Function);
+
+    //backup console.log
+    let output = new Array();
+    const log = console.log;
+    console.log = function(line){
+      output.push(line);
+    };
+
+    //trasition
+    s.printTransitions();
+    expect(output.join("\n")).toBe(fs.readFileSync('__tests__/testData.txt.transition','utf8').trim());
+
+    //zero switch
+    const zeroSwitch = s.nSwitchCoverage(0);
+    output = new Array();
+    s.printNSwitch(zeroSwitch);
+    expect(output.join("\n")).toBe(fs.readFileSync('__tests__/testData.txt.0case','utf8').trim());
+    output = new Array();
+    s.printNSwitchMatrix(zeroSwitch);
+    expect(output.join("\n")).toBe(fs.readFileSync('__tests__/testData.txt.0matrix','utf8').trim());
+
+    //one switch
+    const oneSwitch = s.nSwitchCoverage(1);
+    output = new Array();
+    s.printNSwitch(oneSwitch);
+    expect(output.join("\n")).toBe(fs.readFileSync('__tests__/testData.txt.1case','utf8').trim());
+    output = new Array();
+    s.printNSwitchMatrix(oneSwitch);
+    expect(output.join("\n")).toBe(fs.readFileSync('__tests__/testData.txt.1matrix','utf8').trim());
+
+    //restore console.log
+    console.log = log;
   });
   it(' _clean() : can clean all parameters', () => {
     const s = new Smtc(smcat);

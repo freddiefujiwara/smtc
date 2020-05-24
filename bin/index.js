@@ -12,7 +12,7 @@ if (argv['_'].length < 1 || typeof argv['h'] !== 'undefined'){
   console.error(`Report bugs: ${pkg.bugs.url}`);
   console.error("================================================================================");
   console.error("");
-  console.error("Usage: smtc [-h] <file> [-o <z|zm|o|om|d|t:default>]");
+  console.error("Usage: smtc [-h] <file> [-s <0|1|2... (1:default)>] [-t <t|m|c|d (t:default)>]");
   console.error("");
   process.exit(1);
 }
@@ -20,24 +20,19 @@ if (argv['_'].length < 1 || typeof argv['h'] !== 'undefined'){
 const fs = require('fs');
 const Smtc = require('../src/smtc');
 const s = new Smtc();
-const oneStepCoverage = s.setContents(require('fs').readFileSync(argv['_'][0],'utf8'))
+const swi = argv['s'] && parseInt(argv['s']) >= 0 ? argv['s'] : 0;
+const nSwitchCoverage = s.setContents(require('fs').readFileSync(argv['_'][0],'utf8'))
   .initialize()
-  .oneStepCoverage();
-switch(argv['o']){
-  case "z":
-    s.printZeroStep();
-    break;
-  case "zm":
-    s.printZeroStepMatrix();
-    break;
-  case "o":
-    s.printOneStep(oneStepCoverage);
-    break;
-  case "om":
-    s.printOneStepMatrix(oneStepCoverage);
-    break;
+  .nSwitchCoverage(swi);
+switch(argv['t']){
   case "d":
     s.printDiagram();
+    break;
+  case "m":
+    s.printNSwitchMatrix(nSwitchCoverage);
+    break;
+  case "c":
+    s.printNSwitch(nSwitchCoverage);
     break;
   default:
     s.printTransitions();

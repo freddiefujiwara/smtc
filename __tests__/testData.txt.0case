@@ -1,0 +1,10 @@
+|#|State#1|Event#1|State#2|
+|:--|:--|:--|:--|
+|0|initial|[None]|Accepting reservations|
+|1|Accepting reservations|reserve|Reservation accepted|
+|2|Reservation accepted|reject|Accepting reservations|
+|3|Reservation accepted|cancel of reservation|Accepting reservations|
+|4|Reservation accepted|approve|Reserved|
+|5|Reserved|cancel|Accepting reservations|
+|6|Reserved|cancel approval|Reservation accepted|
+|7|Reserved|car delivered|final|

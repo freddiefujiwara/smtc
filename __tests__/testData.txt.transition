@@ -1,0 +1,7 @@
+||[None]|reserve|approve|cancel approval|reject|cancel of reservation|cancel|car delivered|
+|:--|:--|:--|:--|:--|:--|:--|:--|:--|
+|**initial**|Accepting reservations||||||||
+|**Accepting reservations**||Reservation accepted|||||||
+|**Reservation accepted**|||Reserved||Accepting reservations|Accepting reservations|||
+|**Reserved**||||Reservation accepted|||Accepting reservations|final|
+|**final**|||||||||
