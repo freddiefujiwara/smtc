@@ -108,25 +108,25 @@ describe('Smtc', () => {
     ]);
     expect(s.matrix.length).toBe(9);
     expect(s.matrix).toStrictEqual([
-      [[],[0],[ ],[  ],[ ],[  ],[  ],[],[]],
-      [[],[ ],[4],[3 ],[ ],[  ],[  ],[],[]],
-      [[],[2],[1],[  ],[3],[  ],[  ],[],[]],
-      [[],[9],[ ],[6 ],[4],[8 ],[  ],[],[]],
-      [[],[ ],[9],[2 ],[1],[  ],[  ],[],[]],
-      [[],[ ],[ ],[  ],[ ],[  ],[15],[],[]],
-      [[],[ ],[ ],[18],[ ],[17],[6 ],[],[]],
-      [[],[9],[ ],[  ],[4],[  ],[  ],[],[]],
-      [[],[ ],[ ],[  ],[ ],[  ],[  ],[],[]]
+      [[],[0 ],[  ],[  ],[  ],[  ],[  ],[],[]],
+      [[],[  ],[4 ],[5 ],[  ],[  ],[  ],[],[]],
+      [[],[2 ],[1 ],[  ],[3 ],[  ],[  ],[],[]],
+      [[],[9 ],[  ],[6 ],[7 ],[8 ],[  ],[],[]],
+      [[],[  ],[12],[11],[10],[  ],[  ],[],[]],
+      [[],[  ],[  ],[  ],[  ],[  ],[15],[],[]],
+      [[],[  ],[  ],[18],[  ],[17],[16],[],[]],
+      [[],[14],[  ],[  ],[13],[  ],[  ],[],[]],
+      [[],[  ],[  ],[  ],[  ],[  ],[  ],[],[]]
     ]);
   });
   it(' oneSwitchCoverage() : can calculate 1 step coverage', () => {
     const s = new Smtc();
     s.setContents(fs.readFileSync('__tests__/testData.txt','utf8'))
       .initialize();
+    expect(s.oneSwitchCoverage).toBeInstanceOf(Function);
     expect(s.nSwitchCoverage).toBeInstanceOf(Function);
     const oneSwitch = s.nSwitchCoverage(1);
-//    const oneSwitch = s.oneSwitchCoverage();
-    expect(s.oneSwitchCoverage()).toStrictEqual([
+    expect(oneSwitch).toStrictEqual([
       [[],[           ],[[0,1]            ],[     ],[     ]],
       [[],[[1,4],[1,5]],[                 ],[[1,2]],[     ]],
       [[],[[2,6]      ],[[4,1],[5,1],[2,3]],[     ],[[2,7]]],
@@ -144,6 +144,7 @@ describe('Smtc', () => {
     expect(s.printOneSwitchMatrix).toBeInstanceOf(Function);
     expect(s.printZeroSwitch).toBeInstanceOf(Function);
     expect(s.printZeroSwitchMatrix).toBeInstanceOf(Function);
+    expect(s.printNSwitch).toBeInstanceOf(Function);
     expect(s.printNSwitchMatrix).toBeInstanceOf(Function);
   });
   it(' _clean() : can clean all parameters', () => {

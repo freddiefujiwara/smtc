@@ -75,7 +75,7 @@ class Smtc {
       this.transitions[this.states.indexOf(t.from)][i]
         = this.states.indexOf(t.to);
       this.matrix[this.states.indexOf(t.from)][this.states.indexOf(t.to)]
-        .push(this.events.indexOf(event));
+        .push(i);
     });
     return this;
   }
@@ -178,25 +178,50 @@ class Smtc {
    * @public
    */
   printOneSwitch(oneSwitchCoverage){
-    console.log(`|#|State#1|Event#1|State#2|Event#2|State#3|`);
-    console.log(`|:--|:--|:--|:--|:--|:--|`);
+    this.printNSwitch(oneSwitchCoverage);
+  }
+  /**
+   * print n switch cases
+   * @param {Array} nSwitchCoverage n switch coverage
+   * @public
+   */
+  printNSwitch(nSwitchCoverage){
+    const data = new Array();
+    let swit = 0;
     let no = 0;
     this.states.forEach((from,y) => {
       this.states.forEach((to,x) => {
-        if(oneSwitchCoverage[y][x].length > 0){
-          oneSwitchCoverage[y][x].forEach((path) => {
-            let middleState = 0;
-            this.matrix[y].forEach((events,i) => {
-              if(events.indexOf(path[0]) !== -1){
-                middleState = i;
-              }
-            });
-            console.log(`|${no}|${from}|${path.map((p)=>this.events[p]).join(`|${this.states[middleState]}|`)}|${to}|`);
+        if(nSwitchCoverage[y][x].length > 0){
+          nSwitchCoverage[y][x].forEach((path) => {
+            swit = path.length;
+            let prevState = y;
+            const tr = path.map((p) => {
+              const ret = new Array();
+              ret.push(this.events[p]);
+              ret.push(this.states[this.transitions[prevState][p]]);
+              prevState = this.transitions[prevState][p];
+              return ret.join("|");
+            }).join("|");
+            data.push(`|${no}|${from}|${tr}|`);
             no++;
           });
         }
       });
     });
+    const header = new Array();
+    header.push("#");
+    let i = 1;
+    for(;i <= swit ; i ++){
+      header.push(`State#${i}`);
+      header.push(`Event#${i}`);
+    }
+    header.push(`State#${i}`);
+    const header2 = new Array();
+    header.forEach(() => { header2.push(":--") })
+
+    console.log(`|${header.join("|")}|`);
+    console.log(`|${header2.join("|")}|`);
+    console.log(data.join("\n"));
   }
   /**
    * print one switch matrix
