@@ -5,13 +5,11 @@
  * - setContents(file)
  * - initialize()
  *  - _flattenStates()
- * - oneSwitchCoverage()
- * - printResult(testSets)
+ * - nSwitchCoverage(switch)
  * - printTransitions();
- * - printZeroSwitch();
- * - printZeroSwitchMatrix();
- * - printOneSwitch(oneSwitchCoverage);
- * - printOneSwitchMatrix(oneSwitchCoverage);
+ * - printNSwitch(nSwitchCoverage);
+ * - printNSwitchMatrix(nSwitchCoverage);
+ * - printDiagram();
  *
  */
 class Smtc {
@@ -80,16 +78,6 @@ class Smtc {
     return this;
   }
   /**
-   * calculate 1 switch coverage
-   * @public
-   * @returns {Array} oneSwitchCoverage culculated coverage
-   * @desc
-   * oneSwitchCoverage = this.matrix x this.matrix
-   */
-  oneSwitchCoverage(){
-    return this.nSwitchCoverage(1);
-  }
-  /**
    * calculate n switch coverage
    * @public
    * @params  {Array} matrix
@@ -147,45 +135,29 @@ class Smtc {
     });
   }
   /**
-   * print zero switch cases
-   * @public
-   */
-  printZeroSwitch(){
-    console.log(`|#|State#1|Event#1|State#2|`);
-    console.log(`|:--|:--|:--|:--|`);
-    let no = 0;
-    this.states.forEach((from,y) => {
-      this.states.forEach((to,x) => {
-        if(this.matrix[y][x].length > 0){
-          this.matrix[y][x].forEach((e) => {
-            console.log(`|${no}|${from}|${this.events[e]}|${to}|`);
-            no++;
-          });
-        }
-      });
-    });
-  }
-  /**
-   * print zero switch matrix
-   * @public
-   */
-  printZeroSwitchMatrix(){
-    this.printNSwitchMatrix(this.matrix);
-  }
-  /**
-   * print one switch cases
-   * @param {Array} oneSwitchCoverage one switch coverage
-   * @public
-   */
-  printOneSwitch(oneSwitchCoverage){
-    this.printNSwitch(oneSwitchCoverage);
-  }
-  /**
    * print n switch cases
    * @param {Array} nSwitchCoverage n switch coverage
    * @public
    */
   printNSwitch(nSwitchCoverage){
+    //Zero switch
+    if(nSwitchCoverage === this.matrix){
+      console.log(`|#|State#1|Event#1|State#2|`);
+      console.log(`|:--|:--|:--|:--|`);
+      let no = 0;
+      this.states.forEach((from,y) => {
+        this.states.forEach((to,x) => {
+          if(this.matrix[y][x].length > 0){
+            this.matrix[y][x].forEach((e) => {
+              console.log(`|${no}|${from}|${this.events[e]}|${to}|`);
+              no++;
+            });
+          }
+        });
+      });
+      return;
+    }
+    //N switch
     const data = new Array();
     let swit = 0;
     let no = 0;
@@ -222,14 +194,6 @@ class Smtc {
     console.log(`|${header.join("|")}|`);
     console.log(`|${header2.join("|")}|`);
     console.log(data.join("\n"));
-  }
-  /**
-   * print one switch matrix
-   * @param {Array} oneSwitchCoverage one switch coverage
-   * @public
-   */
-  printOneSwitchMatrix(oneSwitchCoverage){
-    this.printNSwitchMatrix(oneSwitchCoverage);
   }
   /**
    * print n switch matrix

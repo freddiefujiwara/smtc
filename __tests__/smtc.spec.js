@@ -119,11 +119,10 @@ describe('Smtc', () => {
       [[],[  ],[  ],[  ],[  ],[  ],[  ],[],[]]
     ]);
   });
-  it(' oneSwitchCoverage() : can calculate 1 step coverage', () => {
+  it(' nSwitchCoverage() : can calculate 1 step coverage', () => {
     const s = new Smtc();
     s.setContents(fs.readFileSync('__tests__/testData.txt','utf8'))
       .initialize();
-    expect(s.oneSwitchCoverage).toBeInstanceOf(Function);
     expect(s.nSwitchCoverage).toBeInstanceOf(Function);
     const oneSwitch = s.nSwitchCoverage(1);
     expect(oneSwitch).toStrictEqual([
@@ -138,14 +137,43 @@ describe('Smtc', () => {
     const s = new Smtc(smcat);
     s.setContents(fs.readFileSync('__tests__/testData.txt','utf8'))
       .initialize();
+
     expect(s.printDiagram).toBeInstanceOf(Function);
     expect(s.printTransitions).toBeInstanceOf(Function);
-    expect(s.printOneSwitch).toBeInstanceOf(Function);
-    expect(s.printOneSwitchMatrix).toBeInstanceOf(Function);
-    expect(s.printZeroSwitch).toBeInstanceOf(Function);
-    expect(s.printZeroSwitchMatrix).toBeInstanceOf(Function);
     expect(s.printNSwitch).toBeInstanceOf(Function);
     expect(s.printNSwitchMatrix).toBeInstanceOf(Function);
+
+    //backup console.log
+    let output = new Array();
+    const log = console.log;
+    console.log = function(line){
+      output.push(line);
+    };
+
+    //trasition
+    s.printTransitions();
+    expect(output.join("\n")).toBe(fs.readFileSync('__tests__/testData.txt.transition','utf8').trim());
+
+    //zero switch
+    const zeroSwitch = s.nSwitchCoverage(0);
+    output = new Array();
+    s.printNSwitch(zeroSwitch);
+    expect(output.join("\n")).toBe(fs.readFileSync('__tests__/testData.txt.0case','utf8').trim());
+    output = new Array();
+    s.printNSwitchMatrix(zeroSwitch);
+    expect(output.join("\n")).toBe(fs.readFileSync('__tests__/testData.txt.0matrix','utf8').trim());
+
+    //one switch
+    const oneSwitch = s.nSwitchCoverage(1);
+    output = new Array();
+    s.printNSwitch(oneSwitch);
+    expect(output.join("\n")).toBe(fs.readFileSync('__tests__/testData.txt.1case','utf8').trim());
+    output = new Array();
+    s.printNSwitchMatrix(oneSwitch);
+    expect(output.join("\n")).toBe(fs.readFileSync('__tests__/testData.txt.1matrix','utf8').trim());
+
+    //restore console.log
+    console.log = log;
   });
   it(' _clean() : can clean all parameters', () => {
     const s = new Smtc(smcat);
