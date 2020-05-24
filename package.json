@@ -1,6 +1,6 @@
 {
   "name": "smtc",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "A test case generator from state machine diagram",
   "main": "src/smtc.js",
   "bin": "bin/index.js",

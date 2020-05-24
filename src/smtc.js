@@ -70,9 +70,9 @@ class Smtc {
       });
       this.matrix.push(row);
     })
-    this.json.transitions.forEach((t)=> {
+    this.json.transitions.forEach((t,i)=> {
       const event = t.event || "[None]";
-      this.transitions[this.states.indexOf(t.from)][this.events.indexOf(event)]
+      this.transitions[this.states.indexOf(t.from)][i]
         = this.states.indexOf(t.to);
       this.matrix[this.states.indexOf(t.from)][this.states.indexOf(t.to)]
         .push(this.events.indexOf(event));
