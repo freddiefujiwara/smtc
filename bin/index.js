@@ -19,7 +19,7 @@ if (argv['_'].length < 1 || typeof argv['h'] !== 'undefined'){
 
 const fs = require('fs');
 const Smtc = require('../src/smtc');
-const s = new Smtc(require("state-machine-cat"));
+const s = new Smtc();
 const oneStepCoverage = s.setContents(require('fs').readFileSync(argv['_'][0],'utf8'))
   .initialize()
   .oneStepCoverage();

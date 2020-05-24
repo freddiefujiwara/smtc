@@ -1,16 +1,52 @@
 <h1>Try it</h1>
 <h2>input</h2>
-<textarea id="inputscript" style="margin: 0px; width: 100%; height: 135px;">
-  initial                  => "Accepting reservations" ;
-  "Accepting reservations" => "Reservation accepted"   : reserve ;
-  "Reservation accepted"   => "Reserved"               : approve;
-  "Reserved"               => "Reservation accepted"   : cancel approval;
-  "Reservation accepted"   => "Accepting reservations" : reject;
-  "Reservation accepted"   => "Accepting reservations" : cancel of reservation;
-  "Reserved"               => "Accepting reservations" : cancel;
-  "Reserved"               => final                    : car delivered;
+<textarea id="inputscript" style="margin: 0px; width: 100%; height: 100%;">
+initial,
+off: _temperature=25,
+open/off,
+on {
+    idle, 
+    open/on : _temperature=25,
+    active {
+      boil  : _start  = Date.now() // only initialize phase
+              _temperature=25+((Date.now()-_start)/1000)*1.25,
+      keep  : _temperature=100;
+    };
+
+    # _water-=sec*10
+    idle => idle    [color="blue"]  : dispense(sec:number);
+    idle => open/on [color="red"]   : open();
+    idle => boil    [color="black"] : "_water>=10";
+    idle => off     [color="gray"]  : plugOff();
+
+    # _water+=water
+    open/on => open/on  [color="darkgreen"] : fill(water:number) ;
+    open/on => idle     [color="purple"]    : close();
+    open/on => open/off [color="gray"]      : plugOff();
+
+    active => open/on [color="red"]  : open();
+    active => off     [color="gray"] : plugOff();
+
+    boil => keep    [color="black"] : "_temperature>=100";
+
+    # _water-=sec*10
+    keep => keep [color="blue"]   : dispense(sec:number);
+    keep => boil [color="orange"] : reboil();
+    keep => idle [color="black"]  : "_water<10";
+};
+
+# _water=0
+initial => off;
+
+# _water += water
+open/off  => open/off [color="darkgreen"] : fill(water:number);
+open/off  => off      [color="purple"]    : close();
+open/off  => open/on  [color="pink"]      : plugIn();
+
+off => open/off [color="red"]  : open();
+off => idle     [color="pink"] : plugIn();
 </textarea>
-<button id="render">Render</button>
+<button id="render" style="margin: 0px; width: 100%; height: 100%;">GO</button>
 <h2>Diagram</h2>
 <div id="diagram" style="margin: 0px; width: 100%; height: 100%;background-color: transparent;"></div>
 <h2>Transitions</h2>
@@ -43,7 +79,6 @@
       output.push(line);
     };
 
-    
     s.printTransitions();
     $("#transitions").html(markdown.markdown.toHTML(output.join("\n"),"Maruku"));
 
