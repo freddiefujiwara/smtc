@@ -1,17 +1,28 @@
 /**
  * @classdesc
- * This is a smtc class. It's a state machine test case generator inspired by https://github.com/sylvainhalle/QICT
+ * This is a Smtc class. It's a "S"tate "M"achine "T"est "C"ase generator inspired by https://note.com/yumotsuyo/n/nd3099b40dc1f
  * Overall flow is the following
+ * - setContents(file)
+ * - initialize()
+ *  - _flattenStates()
+ * - oneStepCoverage()
+ * - printResult(testSets)
+ * - printTransitions();
+ * - printZeroStep();
+ * - printZeroStepMatrix();
+ * - printOneStep(oneStepCoverage);
+ * - printOneStepMatrix(oneStepCoverage);
  *
  */
 class Smtc {
   /**
    * @constructor
+   * @param {state-machine-cat} smcat this is for webapp
    * @desc
    * this._clean()
    */
   constructor(smcat){
-    this.smcat = smcat;
+    this.smcat = smcat || require('state-machine-cat');
     this._clean();
   }
   /**
@@ -19,7 +30,7 @@ class Smtc {
    * @param {string} contents Target Contents
    * @returns {Smtc} this This object
    * @desc
-   * When you want to output the state machine of the folloing Parameters and Parameter Values
+   * fill this.contents from outside of this instance
    */
   setContents(contents){
     this.contents = contents;
@@ -30,12 +41,16 @@ class Smtc {
    * @public
    * @returns {Smtc} this This object
    * @desc
-   * This method can be divided into a first half and a second half.
+   * In this method, it aims to fill the following parameters
+   * - this.states
+   * - this.events
+   * - this.transitions
+   * - this.matrix
    */
   initialize(){
     this._clean();
     this.json = this.smcat.render(this.contents,{outputType: "json"});
-    this.states = this.json.states.map((s) => s.name);
+    this.states = this._flattenStates(this.json.states).map((s) => s.name);
     this.json.transitions.forEach((t)=> {
       this.events.push(t.event || "[None]");
     });
@@ -69,7 +84,7 @@ class Smtc {
    * @public
    * @returns {Array} oneStepCoverage culculated coverage
    * @desc
-   * This method can be divided into a first half and a second half.
+   * oneStepCoverage = this.matrix x this.matrix
    */
   oneStepCoverage(){
     const oneStep = new Array();
@@ -111,7 +126,7 @@ class Smtc {
     console.log(`||${this.events.join("|")}|`);
     console.log(`|:--|${this.events.map(()=>":--").join("|")}|`);
     this.transitions.forEach((states,y) => {
-        console.log(`|**${this.states[y]}**|${states.map((s) => s > 0 ? this.states[s] : "").join("|")}|`);
+      console.log(`|**${this.states[y]}**|${states.map((s) => s > 0 ? this.states[s] : "").join("|")}|`);
     });
   }
   /**
@@ -135,7 +150,6 @@ class Smtc {
   }
   /**
    * print zero step matrix
-   * @param {Array} oneStepCoverage one step coverage
    * @public
    */
   printZeroStepMatrix(){
@@ -199,6 +213,32 @@ class Smtc {
     this.events = new Array();
     this.transitions = new Array();
     this.matrix = new Array();
+  }
+  /**
+   * flatten states
+   * @public
+   * @returns {Array} states flatten the state and fill in this.json.transitions as needed.
+   * @desc
+   * sometimes the states are nested, so we detect all nested and non-nested states.
+   */
+  _flattenStates(states){
+    const ret = new Array();
+    states.forEach((state) => {
+      if(state.statemachine){
+        if(state.statemachine.states){
+          this._flattenStates(state.statemachine.states).forEach((s) => {
+            ret.push(s);
+          });
+        }
+        if(state.statemachine.transitions){
+          state.statemachine.transitions.forEach((t)=> {
+            this.json.transitions.push(t);
+          });
+        }
+      }
+      ret.push(state);
+    });
+    return ret;
   }
 }
 

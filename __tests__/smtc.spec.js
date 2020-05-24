@@ -9,7 +9,7 @@ describe('Smtc', () => {
     expect(s).toBeInstanceOf(Smtc);
   });
   it(' setContents(file) : can read all strings from file', () => {
-    const s = new Smtc(smcat);
+    const s = new Smtc();
     expect(s.setContents).toBeInstanceOf(Function);
     expect(s.setContents(fs.readFileSync('__tests__/testData.txt','utf8'))).toBeInstanceOf(Smtc);
     expect(s.contents).not.toBe("");
@@ -57,9 +57,16 @@ describe('Smtc', () => {
       [ [   ], [6   ], [ 3 ], [   ], [ 7 ] ], //Reserved
       [ [   ], [    ], [   ], [   ], [   ] ]  //final
     ]);
+    //test for testData.nested.txt
+    s.setContents(fs.readFileSync('__tests__/testData.nest.txt','utf8'));
+    s.initialize();
+    expect(s.events.length).toBe(19);
+    expect(s.states.length).toBe(9);
+    expect(s.transitions.length).toBe(9);
+    expect(s.matrix.length).toBe(9);
   });
   it(' oneStepCoverage() : can calculate 1 step coverage', () => {
-    const s = new Smtc(smcat);
+    const s = new Smtc();
     s.setContents(fs.readFileSync('__tests__/testData.txt','utf8'))
       .initialize();
     expect(s.oneStepCoverage).toBeInstanceOf(Function);
