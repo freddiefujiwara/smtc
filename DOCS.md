@@ -7,13 +7,11 @@ Overall flow is the following</p>
 <li>setContents(file)</li>
 <li>initialize()</li>
 <li>_flattenStates()</li>
-<li>oneSwitchCoverage()</li>
-<li>printResult(testSets)</li>
+<li>nSwitchCoverage(switch)</li>
 <li>printTransitions();</li>
-<li>printZeroSwitch();</li>
-<li>printZeroSwitchMatrix();</li>
-<li>printOneSwitch(oneSwitchCoverage);</li>
-<li>printOneSwitchMatrix(oneSwitchCoverage);</li>
+<li>printNSwitch(nSwitchCoverage);</li>
+<li>printNSwitchMatrix(nSwitchCoverage);</li>
+<li>printDiagram();</li>
 </ul>
 
 **Kind**: global class  
@@ -22,15 +20,10 @@ Overall flow is the following</p>
     * [new Smtc(smcat)](#new_Smtc_new)
     * [.setContents(contents)](#Smtc+setContents) ⇒ [<code>Smtc</code>](#Smtc)
     * [.initialize()](#Smtc+initialize) ⇒ [<code>Smtc</code>](#Smtc)
-    * [.oneSwitchCoverage()](#Smtc+oneSwitchCoverage) ⇒ <code>Array</code>
     * [.nSwitchCoverage()](#Smtc+nSwitchCoverage) ⇒ <code>Array</code>
     * [.printDiagram()](#Smtc+printDiagram)
     * [.printTransitions()](#Smtc+printTransitions)
-    * [.printZeroSwitch()](#Smtc+printZeroSwitch)
-    * [.printZeroSwitchMatrix()](#Smtc+printZeroSwitchMatrix)
-    * [.printOneSwitch(oneSwitchCoverage)](#Smtc+printOneSwitch)
     * [.printNSwitch(nSwitchCoverage)](#Smtc+printNSwitch)
-    * [.printOneSwitchMatrix(oneSwitchCoverage)](#Smtc+printOneSwitchMatrix)
     * [.printNSwitchMatrix(nSwitchCoverage)](#Smtc+printNSwitchMatrix)
     * [._clean()](#Smtc+_clean)
     * [._flattenStates()](#Smtc+_flattenStates) ⇒ <code>Array</code>
@@ -71,14 +64,6 @@ Overall flow is the following</p>
 **Kind**: instance method of [<code>Smtc</code>](#Smtc)  
 **Returns**: [<code>Smtc</code>](#Smtc) - <p>this This object</p>  
 **Access**: public  
-<a name="Smtc+oneSwitchCoverage"></a>
-
-### smtc.oneSwitchCoverage() ⇒ <code>Array</code>
-<p>oneSwitchCoverage = this.matrix x this.matrix</p>
-
-**Kind**: instance method of [<code>Smtc</code>](#Smtc)  
-**Returns**: <code>Array</code> - <p>oneSwitchCoverage culculated coverage</p>  
-**Access**: public  
 <a name="Smtc+nSwitchCoverage"></a>
 
 ### smtc.nSwitchCoverage() ⇒ <code>Array</code>
@@ -102,32 +87,6 @@ Overall flow is the following</p>
 
 **Kind**: instance method of [<code>Smtc</code>](#Smtc)  
 **Access**: public  
-<a name="Smtc+printZeroSwitch"></a>
-
-### smtc.printZeroSwitch()
-<p>print zero switch cases</p>
-
-**Kind**: instance method of [<code>Smtc</code>](#Smtc)  
-**Access**: public  
-<a name="Smtc+printZeroSwitchMatrix"></a>
-
-### smtc.printZeroSwitchMatrix()
-<p>print zero switch matrix</p>
-
-**Kind**: instance method of [<code>Smtc</code>](#Smtc)  
-**Access**: public  
-<a name="Smtc+printOneSwitch"></a>
-
-### smtc.printOneSwitch(oneSwitchCoverage)
-<p>print one switch cases</p>
-
-**Kind**: instance method of [<code>Smtc</code>](#Smtc)  
-**Access**: public  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| oneSwitchCoverage | <code>Array</code> | <p>one switch coverage</p> |
-
 <a name="Smtc+printNSwitch"></a>
 
 ### smtc.printNSwitch(nSwitchCoverage)
@@ -139,18 +98,6 @@ Overall flow is the following</p>
 | Param | Type | Description |
 | --- | --- | --- |
 | nSwitchCoverage | <code>Array</code> | <p>n switch coverage</p> |
-
-<a name="Smtc+printOneSwitchMatrix"></a>
-
-### smtc.printOneSwitchMatrix(oneSwitchCoverage)
-<p>print one switch matrix</p>
-
-**Kind**: instance method of [<code>Smtc</code>](#Smtc)  
-**Access**: public  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| oneSwitchCoverage | <code>Array</code> | <p>one switch coverage</p> |
 
 <a name="Smtc+printNSwitchMatrix"></a>
 

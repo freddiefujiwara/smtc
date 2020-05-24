@@ -69,9 +69,9 @@ off => idle     [color="pink"] : plugIn();
     const inputscript = $("#inputscript").val();
     $("#diagram").html(smcat.render(inputscript));
     const s = new Smtc(smcat);
-    const oneSwitchCoverage = s.setContents(inputscript)
+    const nSwitchCoverage = s.setContents(inputscript)
       .initialize()
-      .oneSwitchCoverage();
+      .nSwitchCoverage(1);
 
     let output = new Array();
     const log = console.log;
@@ -83,19 +83,19 @@ off => idle     [color="pink"] : plugIn();
     $("#transitions").html(markdown.markdown.toHTML(output.join("\n"),"Maruku"));
 
     output = new Array();
-    s.printZeroStep();
+    s.printNSwitch();
     $("#zero").html(markdown.markdown.toHTML(output.join("\n"),"Maruku"));
 
     output = new Array();
-    s.printZeroStepMatrix();
+    s.printNSwitchMatrix();
     $("#zeromatrix").html(markdown.markdown.toHTML(output.join("\n"),"Maruku"));
 
     output = new Array();
-    s.printOneSwitch(oneSwitchCoverage);
+    s.printNSwitch(nSwitchCoverage);
     $("#one").html(markdown.markdown.toHTML(output.join("\n"),"Maruku"));
 
     output = new Array();
-    s.printOneSwitchMatrix(oneSwitchCoverage);
+    s.printNSwitchMatrix(nSwitchCoverage);
     $("#onematrix").html(markdown.markdown.toHTML(output.join("\n"),"Maruku"));
 
     console.log = log;
