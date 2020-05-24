@@ -5,13 +5,13 @@
  * - setContents(file)
  * - initialize()
  *  - _flattenStates()
- * - oneStepCoverage()
+ * - oneSwitchCoverage()
  * - printResult(testSets)
  * - printTransitions();
- * - printZeroStep();
- * - printZeroStepMatrix();
- * - printOneStep(oneStepCoverage);
- * - printOneStepMatrix(oneStepCoverage);
+ * - printZeroSwitch();
+ * - printZeroSwitchMatrix();
+ * - printOneSwitch(oneSwitchCoverage);
+ * - printOneSwitchMatrix(oneSwitchCoverage);
  *
  */
 class Smtc {
@@ -80,36 +80,53 @@ class Smtc {
     return this;
   }
   /**
-   * calculate 1 step coverage
+   * calculate 1 switch coverage
    * @public
-   * @returns {Array} oneStepCoverage culculated coverage
+   * @returns {Array} oneSwitchCoverage culculated coverage
    * @desc
-   * oneStepCoverage = this.matrix x this.matrix
+   * oneSwitchCoverage = this.matrix x this.matrix
    */
-  oneStepCoverage(){
-    const oneStep = new Array();
+  oneSwitchCoverage(){
+    return this.nSwitchCoverage(1);
+  }
+  /**
+   * calculate n switch coverage
+   * @public
+   * @params  {Array} matrix
+   * @returns {Array} nSwitch culculated coverage
+   * @desc
+   * nSwitchCoverage = this.matrix x (n-1)SwitchCoverage
+   */
+  nSwitchCoverage(n,mat){
+    n = n || 0;
+    if(n < 1){
+      return this.matrix;
+    }
+    let matrix = mat || this.matrix;
+    matrix = this.nSwitchCoverage(n-1,matrix);
+    const nSwitch = new Array();
     // this.matrix * this.matrix
     this.matrix.forEach((v,y) => {
-      oneStep.push(new Array());
+      nSwitch.push(new Array());
       v.forEach((h,x) => {
-        oneStep[y].push(new Array());
+        nSwitch[y].push(new Array());
         v.forEach((h2,x2) => {
           // push events if the path exists
-          if(this.matrix[y][x2].length > 0 && this.matrix[x2][x].length > 0){
+          if(this.matrix[y][x2].length > 0 && matrix[x2][x].length > 0){
             const events = new Array();
             this.matrix[y][x2].forEach((e1)=>{
-              this.matrix[x2][x].forEach((e2)=>{
-                events.push([e1,e2]);
+              matrix[x2][x].forEach((e2)=>{
+                events.push([e1,e2].flat());
               });
             });
             events.forEach((e) => {
-              oneStep[y][x].push(e);
+              nSwitch[y][x].push(e);
             });
           }
         });
       });
     })
-    return oneStep;
+    return nSwitch;
   }
   /**
    * print diagram
@@ -130,10 +147,10 @@ class Smtc {
     });
   }
   /**
-   * print zero step cases
+   * print zero switch cases
    * @public
    */
-  printZeroStep(){
+  printZeroSwitch(){
     console.log(`|#|State#1|Event#1|State#2|`);
     console.log(`|:--|:--|:--|:--|`);
     let no = 0;
@@ -149,31 +166,25 @@ class Smtc {
     });
   }
   /**
-   * print zero step matrix
+   * print zero switch matrix
    * @public
    */
-  printZeroStepMatrix(){
-    console.log(`||${this.states.join("|")}|`);
-    console.log(`|:--|${this.states.map(()=>":--").join("|")}|`);
-    this.matrix.forEach((row,y)=>{
-      console.log(`|**${this.states[y]}**|${row.map((r) => {
-        return r.map((n) => this.events[n]).join(",");
-      }).join("|")}|`);
-    });
+  printZeroSwitchMatrix(){
+    this.printNSwitchMatrix(this.matrix);
   }
   /**
-   * print one step cases
-   * @param {Array} oneStepCoverage one step coverage
+   * print one switch cases
+   * @param {Array} oneSwitchCoverage one switch coverage
    * @public
    */
-  printOneStep(oneStepCoverage){
+  printOneSwitch(oneSwitchCoverage){
     console.log(`|#|State#1|Event#1|State#2|Event#2|State#3|`);
     console.log(`|:--|:--|:--|:--|:--|:--|`);
     let no = 0;
     this.states.forEach((from,y) => {
       this.states.forEach((to,x) => {
-        if(oneStepCoverage[y][x].length > 0){
-          oneStepCoverage[y][x].forEach((path) => {
+        if(oneSwitchCoverage[y][x].length > 0){
+          oneSwitchCoverage[y][x].forEach((path) => {
             let middleState = 0;
             this.matrix[y].forEach((events,i) => {
               if(events.indexOf(path[0]) !== -1){
@@ -188,19 +199,30 @@ class Smtc {
     });
   }
   /**
-   * print one step matrix
-   * @param {Array} oneStepCoverage one step coverage
+   * print one switch matrix
+   * @param {Array} oneSwitchCoverage one switch coverage
    * @public
    */
-  printOneStepMatrix(oneStepCoverage){
+  printOneSwitchMatrix(oneSwitchCoverage){
+    this.printNSwitchMatrix(oneSwitchCoverage);
+  }
+  /**
+   * print n switch matrix
+   * @param {Array} nSwitchCoverage one switch coverage
+   * @public
+   */
+  printNSwitchMatrix(nSwitchCoverage){
     console.log(`||${this.states.join("|")}|`);
     console.log(`|:--|${this.states.map(()=>":--").join("|")}|`);
-    oneStepCoverage.forEach((row,y)=>{
+    nSwitchCoverage.forEach((row,y)=>{
       console.log(`|**${this.states[y]}**|${row.map((r) => {
         if(r.length < 1) {
           return "";
         }
-        return r.map((p) => p.map((n) => this.events[n]).join(" -> ")).join(",");
+        if(typeof r[0] === "object"){
+          return r.map((p) => p.map((n) => this.events[n]).join(" -> ")).join(",");
+        }
+        return r.map((n) => this.events[n]).join(",");
       }).join("|")}|`);
     });
   }

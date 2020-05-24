@@ -119,13 +119,14 @@ describe('Smtc', () => {
       [[],[ ],[ ],[  ],[ ],[  ],[  ],[],[]]
     ]);
   });
-  it(' oneStepCoverage() : can calculate 1 step coverage', () => {
+  it(' oneSwitchCoverage() : can calculate 1 step coverage', () => {
     const s = new Smtc();
     s.setContents(fs.readFileSync('__tests__/testData.txt','utf8'))
       .initialize();
-    expect(s.oneStepCoverage).toBeInstanceOf(Function);
-    const oneStep = s.oneStepCoverage();
-    expect(s.oneStepCoverage()).toStrictEqual([
+    expect(s.nSwitchCoverage).toBeInstanceOf(Function);
+    const oneSwitch = s.nSwitchCoverage(1);
+//    const oneSwitch = s.oneSwitchCoverage();
+    expect(s.oneSwitchCoverage()).toStrictEqual([
       [[],[           ],[[0,1]            ],[     ],[     ]],
       [[],[[1,4],[1,5]],[                 ],[[1,2]],[     ]],
       [[],[[2,6]      ],[[4,1],[5,1],[2,3]],[     ],[[2,7]]],
@@ -133,16 +134,17 @@ describe('Smtc', () => {
       [[],[           ],[                 ],[     ],[     ]]
     ]);
   });
-  it(' printOneStep(oneStepCoverage) : can print all paths', () => {
+  it(' printXXX() : can print all methods', () => {
     const s = new Smtc(smcat);
     s.setContents(fs.readFileSync('__tests__/testData.txt','utf8'))
       .initialize();
     expect(s.printDiagram).toBeInstanceOf(Function);
     expect(s.printTransitions).toBeInstanceOf(Function);
-    expect(s.printOneStep).toBeInstanceOf(Function);
-    expect(s.printOneStepMatrix).toBeInstanceOf(Function);
-    expect(s.printZeroStep).toBeInstanceOf(Function);
-    expect(s.printZeroStepMatrix).toBeInstanceOf(Function);
+    expect(s.printOneSwitch).toBeInstanceOf(Function);
+    expect(s.printOneSwitchMatrix).toBeInstanceOf(Function);
+    expect(s.printZeroSwitch).toBeInstanceOf(Function);
+    expect(s.printZeroSwitchMatrix).toBeInstanceOf(Function);
+    expect(s.printNSwitchMatrix).toBeInstanceOf(Function);
   });
   it(' _clean() : can clean all parameters', () => {
     const s = new Smtc(smcat);

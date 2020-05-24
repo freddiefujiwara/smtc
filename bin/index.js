@@ -20,21 +20,21 @@ if (argv['_'].length < 1 || typeof argv['h'] !== 'undefined'){
 const fs = require('fs');
 const Smtc = require('../src/smtc');
 const s = new Smtc();
-const oneStepCoverage = s.setContents(require('fs').readFileSync(argv['_'][0],'utf8'))
+const oneSwitchCoverage = s.setContents(require('fs').readFileSync(argv['_'][0],'utf8'))
   .initialize()
-  .oneStepCoverage();
+  .oneSwitchCoverage();
 switch(argv['o']){
   case "z":
-    s.printZeroStep();
+    s.printZeroSwitch();
     break;
   case "zm":
-    s.printZeroStepMatrix();
+    s.printZeroSwitchMatrix();
     break;
   case "o":
-    s.printOneStep(oneStepCoverage);
+    s.printOneSwitch(oneSwitchCoverage);
     break;
   case "om":
-    s.printOneStepMatrix(oneStepCoverage);
+    s.printOneSwitchMatrix(oneSwitchCoverage);
     break;
   case "d":
     s.printDiagram();
