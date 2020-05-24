@@ -61,9 +61,63 @@ describe('Smtc', () => {
     s.setContents(fs.readFileSync('__tests__/testData.nest.txt','utf8'));
     s.initialize();
     expect(s.events.length).toBe(19);
+    expect(s.events).toStrictEqual([
+      "[None]",
+      "fill(water:number)",
+      "close()",
+      "plugIn()",
+      "open()",
+      "plugIn()",
+      "dispense(sec:number)",
+      "open()",
+      "_water>=10",
+      "plugOff()",
+      "fill(water:number)",
+      "close()",
+      "plugOff()",
+      "open()",
+      "plugOff()",
+      "_temperature>=100",
+      "dispense(sec:number)",
+      "reboil()",
+      "_water<10"
+    ]);
     expect(s.states.length).toBe(9);
+    expect(s.states).toStrictEqual([
+      "initial",
+      "off",
+      "open/off",
+      "idle",
+      "open/on",
+      "boil",
+      "keep",
+      "active",
+      "on"
+    ]);
     expect(s.transitions.length).toBe(9);
+    expect(s.transitions).toStrictEqual([
+      [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,2,3,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,2,1,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,3,4,5,1,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,4,3,2,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6,5,3],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,4,1,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    ]);
     expect(s.matrix.length).toBe(9);
+    expect(s.matrix).toStrictEqual([
+      [[],[0],[ ],[  ],[ ],[  ],[  ],[],[]],
+      [[],[ ],[4],[3 ],[ ],[  ],[  ],[],[]],
+      [[],[2],[1],[  ],[3],[  ],[  ],[],[]],
+      [[],[9],[ ],[6 ],[4],[8 ],[  ],[],[]],
+      [[],[ ],[9],[2 ],[1],[  ],[  ],[],[]],
+      [[],[ ],[ ],[  ],[ ],[  ],[15],[],[]],
+      [[],[ ],[ ],[18],[ ],[17],[6 ],[],[]],
+      [[],[9],[ ],[  ],[4],[  ],[  ],[],[]],
+      [[],[ ],[ ],[  ],[ ],[  ],[  ],[],[]]
+    ]);
   });
   it(' oneStepCoverage() : can calculate 1 step coverage', () => {
     const s = new Smtc();
