@@ -83,11 +83,11 @@ off => idle     [color="pink"] : plugIn();
     $("#transitions").html(markdown.markdown.toHTML(output.join("\n"),"Maruku"));
 
     output = new Array();
-    s.printNSwitch();
+    s.printNSwitch(s.matrix);
     $("#zero").html(markdown.markdown.toHTML(output.join("\n"),"Maruku"));
 
     output = new Array();
-    s.printNSwitchMatrix();
+    s.printNSwitchMatrix(s.matrix);
     $("#zeromatrix").html(markdown.markdown.toHTML(output.join("\n"),"Maruku"));
 
     output = new Array();
