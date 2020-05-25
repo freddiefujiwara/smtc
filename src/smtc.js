@@ -20,7 +20,7 @@ class Smtc {
    * this._clean()
    */
   constructor(smcat){
-    this.smcat = typeof smcat === 'state-machine-cat' ? smcat : require('state-machine-cat');
+    this.smcat = smcat || require('state-machine-cat');
     this._clean();
   }
   /**
