@@ -97,7 +97,7 @@ Overall flow is the following</p>
 
 | Param | Type | Description |
 | --- | --- | --- |
-| nSwitchCoverage | <code>Array</code> | <p>n switch coverage</p> |
+| nSwitchCoverage | <code>Array</code> | <p>n switch coverage (default: this.matrix)</p> |
 
 <a name="Smtc+printNSwitchMatrix"></a>
 

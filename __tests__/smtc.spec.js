@@ -134,7 +134,7 @@ describe('Smtc', () => {
     ]);
   });
   it(' printXXX() : can print all methods', () => {
-    const s = new Smtc(smcat);
+    let s = new Smtc(smcat);
     s.setContents(fs.readFileSync('__tests__/testData.txt','utf8'))
       .initialize();
 
@@ -155,7 +155,7 @@ describe('Smtc', () => {
     expect(output.join("\n")).toBe(fs.readFileSync('__tests__/testData.txt.transition','utf8').trim());
 
     //zero switch
-    const zeroSwitch = s.nSwitchCoverage(0);
+    let zeroSwitch = s.nSwitchCoverage(0);
     output = new Array();
     s.printNSwitch(zeroSwitch);
     expect(output.join("\n")).toBe(fs.readFileSync('__tests__/testData.txt.0case','utf8').trim());
@@ -170,13 +170,46 @@ describe('Smtc', () => {
     expect(output.join("\n")).toBe(fs.readFileSync('__tests__/testData.txt.0matrix','utf8').trim());
 
     //one switch
-    const oneSwitch = s.nSwitchCoverage(1);
+    let oneSwitch = s.nSwitchCoverage(1);
     output = new Array();
     s.printNSwitch(oneSwitch);
     expect(output.join("\n")).toBe(fs.readFileSync('__tests__/testData.txt.1case','utf8').trim());
     output = new Array();
     s.printNSwitchMatrix(oneSwitch);
     expect(output.join("\n")).toBe(fs.readFileSync('__tests__/testData.txt.1matrix','utf8').trim());
+
+    s = new Smtc();
+    s.setContents(fs.readFileSync('__tests__/testData.nest.txt','utf8'))
+      .initialize();
+
+    //trasition
+    output = new Array();
+    s.printTransitions();
+    expect(output.join("\n")).toBe(fs.readFileSync('__tests__/testData.nest.txt.transition','utf8').trim());
+
+    //zero switch
+    zeroSwitch = s.nSwitchCoverage(0);
+    output = new Array();
+    s.printNSwitch(zeroSwitch);
+    expect(output.join("\n")).toBe(fs.readFileSync('__tests__/testData.nest.txt.0case','utf8').trim());
+    output = new Array();
+    s.printNSwitch();
+    expect(output.join("\n")).toBe(fs.readFileSync('__tests__/testData.nest.txt.0case','utf8').trim());
+    output = new Array();
+    s.printNSwitchMatrix(zeroSwitch);
+    expect(output.join("\n")).toBe(fs.readFileSync('__tests__/testData.nest.txt.0matrix','utf8').trim());
+    output = new Array();
+    s.printNSwitchMatrix();
+    expect(output.join("\n")).toBe(fs.readFileSync('__tests__/testData.nest.txt.0matrix','utf8').trim());
+
+    //one switch
+    oneSwitch = s.nSwitchCoverage(1);
+    output = new Array();
+    s.printNSwitch(oneSwitch);
+    expect(output.join("\n")).toBe(fs.readFileSync('__tests__/testData.nest.txt.1case','utf8').trim());
+    output = new Array();
+    s.printNSwitchMatrix(oneSwitch);
+    expect(output.join("\n")).toBe(fs.readFileSync('__tests__/testData.nest.txt.1matrix','utf8').trim());
 
     //restore console.log
     console.log = log;

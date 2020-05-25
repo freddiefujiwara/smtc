@@ -140,45 +140,36 @@ class Smtc {
    */
   printNSwitch(nSwitchCoverage){
     nSwitchCoverage = nSwitchCoverage || this.matrix;
-    //Zero switch
-    if(nSwitchCoverage === this.matrix){
-      console.log(`|#|State#1|Event#1|State#2|`);
-      console.log(`|:--|:--|:--|:--|`);
-      let no = 0;
-      this.states.forEach((from,y) => {
-        this.states.forEach((to,x) => {
-          if(this.matrix[y][x].length > 0){
-            this.matrix[y][x].forEach((e) => {
-              console.log(`|${no}|${from}|${this.events[e]}|${to}|`);
-              no++;
-            });
-          }
-        });
-      });
-      return;
-    }
-    //N switch
+    let swit = 0; // n + 1 switch Coverage
+    let no = 0;   // test case number
+
     const data = new Array();
-    let swit = 0;
-    let no = 0;
     this.states.forEach((from,y) => {
       this.states.forEach((to,x) => {
         if(nSwitchCoverage[y][x].length > 0){
           nSwitchCoverage[y][x].forEach((path) => {
-            // path.length  should be "n+1" switch coverage
-            // ex [1,2,3,4] = 3 switch coverage
-            // ex [1] = 0 switch coverage
-            swit = path.length;
-            let prevState = y;
-            // print transition
-            // ex) event1|state2|event2|state3 ....
-            const tr = path.map((p) => {
-              const ret = new Array();
-              ret.push(this.events[p]);
-              ret.push(this.states[this.transitions[prevState][p]]);
-              prevState = this.transitions[prevState][p];
-              return ret.join("|");
-            }).join("|");
+            let tr = ""; // transition
+            //N switch
+            if(typeof path === "object"){
+              // path.length  should be "n+1" switch coverage
+              // ex [1,2,3,4] = 3 switch coverage
+              // ex [1,2] = 1 switch coverage
+              let prevState = y;
+              // print transition
+              // ex) event1|state2|event2|state3 ....
+              tr = path.map((p) => {
+                const ret = new Array();
+                ret.push(this.events[p]);
+                ret.push(this.states[this.transitions[prevState][p]]);
+                prevState = this.transitions[prevState][p];
+                return ret.join("|");
+              }).join("|");
+              swit = path.length;
+            }else{
+              //Zero switch
+              tr = `${this.events[path]}|${to}`;
+              swit = 1;
+            }
             data.push(`|${no}|${from}|${tr}|`);
             no++;
           });
