@@ -46,7 +46,18 @@ open/off  => open/on  [color="pink"]      : plugIn();
 off => open/off [color="red"]  : open();
 off => idle     [color="pink"] : plugIn();
 </textarea>
-<button id="render" style="margin: 0px; width: 100%; height: 100%;">GO</button>
+<p style="margin: 0px; width: 100%; height: 100%;">
+   Switch:
+   <select name="”switch”" id="switch">
+      <option value="”0”">0</option>
+      <option value="”1”">1</option>
+      <option value="”2”">2</option>
+      <option value="”3”">3</option>
+      <option value="”4”">4</option>
+      <option value="”5”">5</option>
+   </select>
+   <button id="render" style="margin: 0px; width: 80%; height: 100%;">GO</button>
+</p>
 <h2>Diagram</h2>
 <div id="diagram" style="margin: 0px; width: 100%; height: 100%;background-color: transparent;"></div>
 <h2>Transitions</h2>
@@ -64,41 +75,41 @@ off => idle     [color="pink"] : plugIn();
 <script src="https://freddiefujiwara.github.io/smtc/src/markdown.min.js"></script>
 <script src="https://code.jquery.com/jquery-git.slim.min.js"></script>
 <script type="text/javascript">
-  //<![CDATA[
-  $("#render").click(()=>{
-    const inputscript = $("#inputscript").val();
-    $("#diagram").html(smcat.render(inputscript));
-    const s = new Smtc(smcat);
-    const nSwitchCoverage = s.setContents(inputscript)
-      .initialize()
-      .nSwitchCoverage(1);
-
-    let output = new Array();
-    const log = console.log;
-    console.log = function(line){
-      output.push(line);
-    };
-
-    s.printTransitions();
-    $("#transitions").html(markdown.markdown.toHTML(output.join("\n"),"Maruku"));
-
-    output = new Array();
-    s.printNSwitch(s.matrix);
-    $("#zero").html(markdown.markdown.toHTML(output.join("\n"),"Maruku"));
-
-    output = new Array();
-    s.printNSwitchMatrix(s.matrix);
-    $("#zeromatrix").html(markdown.markdown.toHTML(output.join("\n"),"Maruku"));
-
-    output = new Array();
-    s.printNSwitch(nSwitchCoverage);
-    $("#one").html(markdown.markdown.toHTML(output.join("\n"),"Maruku"));
-
-    output = new Array();
-    s.printNSwitchMatrix(nSwitchCoverage);
-    $("#onematrix").html(markdown.markdown.toHTML(output.join("\n"),"Maruku"));
-
-    console.log = log;
-  });
-//]]>
+   //<![CDATA[
+   $("#render").click(()=>{
+     const inputscript = $("#inputscript").val();
+     $("#diagram").html(smcat.render(inputscript));
+     const s = new Smtc(smcat);
+     const nSwitchCoverage = s.setContents(inputscript)
+       .initialize()
+       .nSwitchCoverage(1);
+   
+     let output = new Array();
+     const log = console.log;
+     console.log = function(line){
+       output.push(line);
+     };
+   
+     s.printTransitions();
+     $("#transitions").html(markdown.markdown.toHTML(output.join("\n"),"Maruku"));
+   
+     output = new Array();
+     s.printNSwitch(s.matrix);
+     $("#zero").html(markdown.markdown.toHTML(output.join("\n"),"Maruku"));
+   
+     output = new Array();
+     s.printNSwitchMatrix(s.matrix);
+     $("#zeromatrix").html(markdown.markdown.toHTML(output.join("\n"),"Maruku"));
+   
+     output = new Array();
+     s.printNSwitch(nSwitchCoverage);
+     $("#one").html(markdown.markdown.toHTML(output.join("\n"),"Maruku"));
+   
+     output = new Array();
+     s.printNSwitchMatrix(nSwitchCoverage);
+     $("#onematrix").html(markdown.markdown.toHTML(output.join("\n"),"Maruku"));
+   
+     console.log = log;
+   });
+   //]]>
 </script>
