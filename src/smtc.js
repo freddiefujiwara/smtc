@@ -252,6 +252,11 @@ class Smtc {
     return ret;
   }
 }
+//
+// for old platform because flat is implemented for node > v11 , Chrome > v69, Opera > 56
+// The code was taken from https://stackoverflow.com/questions/50993498/flat-is-not-a-function-whats-wrong
+// by Ivan https://stackoverflow.com/users/6331369/ivan
+//
 Object.defineProperty(Array.prototype, 'flat', {
   value: function(depth = 1) {
     return this.reduce(function (flat, toFlatten) {
