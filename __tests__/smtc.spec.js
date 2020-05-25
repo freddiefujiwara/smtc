@@ -160,7 +160,13 @@ describe('Smtc', () => {
     s.printNSwitch(zeroSwitch);
     expect(output.join("\n")).toBe(fs.readFileSync('__tests__/testData.txt.0case','utf8').trim());
     output = new Array();
+    s.printNSwitch();
+    expect(output.join("\n")).toBe(fs.readFileSync('__tests__/testData.txt.0case','utf8').trim());
+    output = new Array();
     s.printNSwitchMatrix(zeroSwitch);
+    expect(output.join("\n")).toBe(fs.readFileSync('__tests__/testData.txt.0matrix','utf8').trim());
+    output = new Array();
+    s.printNSwitchMatrix();
     expect(output.join("\n")).toBe(fs.readFileSync('__tests__/testData.txt.0matrix','utf8').trim());
 
     //one switch

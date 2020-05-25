@@ -20,7 +20,7 @@ class Smtc {
    * this._clean()
    */
   constructor(smcat){
-    this.smcat = smcat || require('state-machine-cat');
+    this.smcat = typeof smcat === 'state-machine-cat' ? smcat : require('state-machine-cat');
     this._clean();
   }
   /**
@@ -90,8 +90,7 @@ class Smtc {
     if(n < 1){
       return this.matrix;
     }
-    let matrix = mat || this.matrix;
-    matrix = this.nSwitchCoverage(n-1,matrix);
+    const matrix = this.nSwitchCoverage(n-1,mat || this.matrix);
     const nSwitch = new Array();
     // this.matrix * this.matrix
     this.matrix.forEach((v,y) => {
@@ -136,10 +135,11 @@ class Smtc {
   }
   /**
    * print n switch cases
-   * @param {Array} nSwitchCoverage n switch coverage
+   * @param {Array} nSwitchCoverage n switch coverage (default: this.matrix)
    * @public
    */
   printNSwitch(nSwitchCoverage){
+    nSwitchCoverage = nSwitchCoverage || this.matrix;
     //Zero switch
     if(nSwitchCoverage === this.matrix){
       console.log(`|#|State#1|Event#1|State#2|`);
@@ -165,8 +165,13 @@ class Smtc {
       this.states.forEach((to,x) => {
         if(nSwitchCoverage[y][x].length > 0){
           nSwitchCoverage[y][x].forEach((path) => {
+            // path.length  should be "n+1" switch coverage
+            // ex [1,2,3,4] = 3 switch coverage
+            // ex [1] = 0 switch coverage
             swit = path.length;
             let prevState = y;
+            // print transition
+            // ex) event1|state2|event2|state3 ....
             const tr = path.map((p) => {
               const ret = new Array();
               ret.push(this.events[p]);
@@ -180,6 +185,7 @@ class Smtc {
         }
       });
     });
+    //create headers
     const header = new Array();
     header.push("#");
     let i = 1;
@@ -201,6 +207,7 @@ class Smtc {
    * @public
    */
   printNSwitchMatrix(nSwitchCoverage){
+    nSwitchCoverage = nSwitchCoverage || this.matrix;
     console.log(`||${this.states.join("|")}|`);
     console.log(`|:--|${this.states.map(()=>":--").join("|")}|`);
     nSwitchCoverage.forEach((row,y)=>{
