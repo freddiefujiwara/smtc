@@ -1,0 +1,11 @@
+||initial|off|open/off|idle|open/on|boil|keep|active|on|
+|:--|:--|:--|:--|:--|:--|:--|:--|:--|:--|
+|**initial**||[None]||||||||
+|**off**|||open()|plugIn()||||||
+|**open/off**||close()|fill(water:number)||plugIn()|||||
+|**idle**||plugOff()||dispense(sec:number)|open()|_water>=10||||
+|**open/on**|||plugOff()|close()|fill(water:number)|||||
+|**boil**|||||||_temperature>=100|||
+|**keep**||||_water<10||reboil()|dispense(sec:number)|||
+|**active**||plugOff()|||open()|||||
+|**on**||||||||||
