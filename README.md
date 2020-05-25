@@ -20,7 +20,7 @@ $ npm i -g smtc
 # <file>:inputscript
 # -s : switch
 # -t : output type t:transition/m:matrix/c:testcases/d:diagram
-smtc [-h] <file> [-s <0|1|2... (1:default)>] [-t <t|m|c|d (t:default)>]
+smtc [-h] <file> [-s <0|1|2... (0:default)>] [-t <t|m|c|d (t:default)>]
 ```
 
 ## sample data

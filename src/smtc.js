@@ -20,7 +20,7 @@ class Smtc {
    * this._clean()
    */
   constructor(smcat){
-    this.smcat = smcat || require('state-machine-cat');
+    this.smcat = typeof smcat === 'state-machine-cat' ? smcat : require('state-machine-cat');
     this._clean();
   }
   /**
@@ -90,8 +90,7 @@ class Smtc {
     if(n < 1){
       return this.matrix;
     }
-    let matrix = mat || this.matrix;
-    matrix = this.nSwitchCoverage(n-1,matrix);
+    const matrix = this.nSwitchCoverage(n-1,mat || this.matrix);
     const nSwitch = new Array();
     // this.matrix * this.matrix
     this.matrix.forEach((v,y) => {
@@ -136,50 +135,48 @@ class Smtc {
   }
   /**
    * print n switch cases
-   * @param {Array} nSwitchCoverage n switch coverage
+   * @param {Array} nSwitchCoverage n switch coverage (default: this.matrix)
    * @public
    */
   printNSwitch(nSwitchCoverage){
-    //Zero switch
-    if(nSwitchCoverage === this.matrix){
-      console.log(`|#|State#1|Event#1|State#2|`);
-      console.log(`|:--|:--|:--|:--|`);
-      let no = 0;
-      this.states.forEach((from,y) => {
-        this.states.forEach((to,x) => {
-          if(this.matrix[y][x].length > 0){
-            this.matrix[y][x].forEach((e) => {
-              console.log(`|${no}|${from}|${this.events[e]}|${to}|`);
-              no++;
-            });
-          }
-        });
-      });
-      return;
-    }
-    //N switch
+    nSwitchCoverage = nSwitchCoverage || this.matrix;
+    let swit = 0; // n + 1 switch Coverage
+    let no = 0;   // test case number
+
     const data = new Array();
-    let swit = 0;
-    let no = 0;
     this.states.forEach((from,y) => {
       this.states.forEach((to,x) => {
         if(nSwitchCoverage[y][x].length > 0){
           nSwitchCoverage[y][x].forEach((path) => {
-            swit = path.length;
-            let prevState = y;
-            const tr = path.map((p) => {
-              const ret = new Array();
-              ret.push(this.events[p]);
-              ret.push(this.states[this.transitions[prevState][p]]);
-              prevState = this.transitions[prevState][p];
-              return ret.join("|");
-            }).join("|");
+            let tr = ""; // transition
+            //N switch
+            if(typeof path === "object"){
+              // path.length  should be "n+1" switch coverage
+              // ex [1,2,3,4] = 3 switch coverage
+              // ex [1,2] = 1 switch coverage
+              let prevState = y;
+              // print transition
+              // ex) event1|state2|event2|state3 ....
+              tr = path.map((p) => {
+                const ret = new Array();
+                ret.push(this.events[p]);
+                ret.push(this.states[this.transitions[prevState][p]]);
+                prevState = this.transitions[prevState][p];
+                return ret.join("|");
+              }).join("|");
+              swit = path.length;
+            }else{
+              //Zero switch
+              tr = `${this.events[path]}|${to}`;
+              swit = 1;
+            }
             data.push(`|${no}|${from}|${tr}|`);
             no++;
           });
         }
       });
     });
+    //create headers
     const header = new Array();
     header.push("#");
     let i = 1;
@@ -201,6 +198,7 @@ class Smtc {
    * @public
    */
   printNSwitchMatrix(nSwitchCoverage){
+    nSwitchCoverage = nSwitchCoverage || this.matrix;
     console.log(`||${this.states.join("|")}|`);
     console.log(`|:--|${this.states.map(()=>":--").join("|")}|`);
     nSwitchCoverage.forEach((row,y)=>{
@@ -252,6 +250,11 @@ class Smtc {
     return ret;
   }
 }
+//
+// for old platform because flat is implemented for node > v11 , Chrome > v69, Opera > 56
+// The code was taken from https://stackoverflow.com/questions/50993498/flat-is-not-a-function-whats-wrong
+// by Ivan https://stackoverflow.com/users/6331369/ivan
+//
 Object.defineProperty(Array.prototype, 'flat', {
   value: function(depth = 1) {
     return this.reduce(function (flat, toFlatten) {

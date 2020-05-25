@@ -1,0 +1,11 @@
+||initial|off|open/off|idle|open/on|boil|keep|active|on|
+|:--|:--|:--|:--|:--|:--|:--|:--|:--|:--|
+|**initial**|||[None] -> open()|[None] -> plugIn()||||||
+|**off**||open() -> close(),plugIn() -> plugOff()|open() -> fill(water:number)|plugIn() -> dispense(sec:number)|open() -> plugIn(),plugIn() -> open()|plugIn() -> _water>=10||||
+|**open/off**||fill(water:number) -> close()|close() -> open(),fill(water:number) -> fill(water:number),plugIn() -> plugOff()|close() -> plugIn(),plugIn() -> close()|fill(water:number) -> plugIn(),plugIn() -> fill(water:number)|||||
+|**idle**||dispense(sec:number) -> plugOff()|plugOff() -> open(),open() -> plugOff()|plugOff() -> plugIn(),dispense(sec:number) -> dispense(sec:number),open() -> close()|dispense(sec:number) -> open(),open() -> fill(water:number)|dispense(sec:number) -> _water>=10|_water>=10 -> _temperature>=100|||
+|**open/on**||plugOff() -> close(),close() -> plugOff()|plugOff() -> fill(water:number),fill(water:number) -> plugOff()|close() -> dispense(sec:number),fill(water:number) -> close()|plugOff() -> plugIn(),close() -> open(),fill(water:number) -> fill(water:number)|close() -> _water>=10||||
+|**boil**||||_temperature>=100 -> _water<10||_temperature>=100 -> reboil()|_temperature>=100 -> dispense(sec:number)|||
+|**keep**||_water<10 -> plugOff()||_water<10 -> dispense(sec:number),dispense(sec:number) -> _water<10|_water<10 -> open()|_water<10 -> _water>=10,dispense(sec:number) -> reboil()|reboil() -> _temperature>=100,dispense(sec:number) -> dispense(sec:number)|||
+|**active**|||plugOff() -> open(),open() -> plugOff()|plugOff() -> plugIn(),open() -> close()|open() -> fill(water:number)|||||
+|**on**||||||||||
