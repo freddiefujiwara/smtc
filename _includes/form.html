@@ -72,7 +72,7 @@ off => idle     [color="pink"] : plugIn();
 <script src="https://code.jquery.com/jquery-git.slim.min.js"></script>
 <script type="text/javascript">
    //<![CDATA[
-  $("#render").click(() => {
+$("#render").click(() => {
     const inputscript = $("#inputscript").val();
     $("#diagram").html(smcat.render(inputscript));
     const s = new Smtc(smcat);
@@ -100,19 +100,20 @@ off => idle     [color="pink"] : plugIn();
     $("#matrix").text($("#switch").val() + " Switch matrix");
 
     console.log = log;
-    
-    // for default inputscript 
-    // ex) https://freddiefujiwara.github.io/smtc/i=[url encoded inputscript]
-    let queries = {};
-    document.location.search.substr(1).split('&').forEach((q) => {
-        const i = q.split('=');
-        if (i.length > 1) {
-            queries[i[0].toString()] = decodeURIComponent(i[1].toString());
-        }
-    });
-    if (queries["i"] && queries["i"].length > 0) {
-        $("#inputscript").val(queries["i"]);
+
+});
+
+// for default inputscript 
+// ex) https://freddiefujiwara.github.io/smtc/i=[url encoded inputscript]
+let queries = {};
+document.location.search.substr(1).split('&').forEach((q) => {
+    const i = q.split('=');
+    if (i.length > 1) {
+        queries[i[0].toString()] = decodeURIComponent(i[1].toString());
     }
 });
+if (queries["i"] && queries["i"].length > 0) {
+    $("#inputscript").val(queries["i"]);
+}
    //]]>
 </script>
