@@ -74,6 +74,9 @@ off => idle     [color="pink"] : plugIn();
    //<![CDATA[
 $("#render").click(() => {
     const inputscript = $("#inputscript").val();
+    // url change
+    window.history.pushState("","","https://freddiefujiwara.github.io/smtc/?i="+encodeURIComponent(inputscript)+"#inputscript");
+
     $("#diagram").html(smcat.render(inputscript));
     const s = new Smtc(smcat);
     const nSwitchCoverage = s.setContents(inputscript)
