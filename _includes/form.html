@@ -75,7 +75,10 @@ off => idle     [color="pink"] : plugIn();
 $("#render").click(() => {
     const inputscript = $("#inputscript").val();
     // url change
-    window.history.pushState("","","https://freddiefujiwara.github.io/smtc/?i="+encodeURIComponent(inputscript)+"#inputscript");
+
+    if (!(queries["g"] && queries["g"].length > 0)) {
+        window.history.pushState("", "", "https://freddiefujiwara.github.io/smtc/?i=" + encodeURIComponent(inputscript) + "#inputscript");
+    }
 
     $("#diagram").html(smcat.render(inputscript));
     const s = new Smtc(smcat);
