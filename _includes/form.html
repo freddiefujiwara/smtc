@@ -72,34 +72,47 @@ off => idle     [color="pink"] : plugIn();
 <script src="https://code.jquery.com/jquery-git.slim.min.js"></script>
 <script type="text/javascript">
    //<![CDATA[
-   $("#render").click(()=>{
-     const inputscript = $("#inputscript").val();
-     $("#diagram").html(smcat.render(inputscript));
-     const s = new Smtc(smcat);
-     const nSwitchCoverage = s.setContents(inputscript)
-       .initialize()
-       .nSwitchCoverage($("#switch").val());
-   
-     let output = new Array();
-     const log = console.log;
-     console.log = function(line){
-       output.push(line);
-     };
-   
-     s.printTransitions();
-     $("#transitions").html(markdown.markdown.toHTML(output.join("\n"),"Maruku"));
-   
-     output = new Array();
-     s.printNSwitch(nSwitchCoverage);
-     $("#one").html(markdown.markdown.toHTML(output.join("\n"),"Maruku"));
-     $("#case").text($("#switch").val()+" Switch test cases");
-   
-     output = new Array();
-     s.printNSwitchMatrix(nSwitchCoverage);
-     $("#onematrix").html(markdown.markdown.toHTML(output.join("\n"),"Maruku"));
-     $("#matrix").text($("#switch").val()+" Switch matrix");
-   
-     console.log = log;
-   });
+  $("#render").click(() => {
+    const inputscript = $("#inputscript").val();
+    $("#diagram").html(smcat.render(inputscript));
+    const s = new Smtc(smcat);
+    const nSwitchCoverage = s.setContents(inputscript)
+        .initialize()
+        .nSwitchCoverage($("#switch").val());
+
+    let output = new Array();
+    const log = console.log;
+    console.log = function(line) {
+        output.push(line);
+    };
+
+    s.printTransitions();
+    $("#transitions").html(markdown.markdown.toHTML(output.join("\n"), "Maruku"));
+
+    output = new Array();
+    s.printNSwitch(nSwitchCoverage);
+    $("#one").html(markdown.markdown.toHTML(output.join("\n"), "Maruku"));
+    $("#case").text($("#switch").val() + " Switch test cases");
+
+    output = new Array();
+    s.printNSwitchMatrix(nSwitchCoverage);
+    $("#onematrix").html(markdown.markdown.toHTML(output.join("\n"), "Maruku"));
+    $("#matrix").text($("#switch").val() + " Switch matrix");
+
+    console.log = log;
+    
+    // for default inputscript 
+    // ex) https://freddiefujiwara.github.io/smtc/i=[url encoded inputscript]
+    let queries = {};
+    document.location.search.substr(1).split('&').forEach((q) => {
+        const i = q.split('=');
+        if (i.length > 1) {
+            queries[i[0].toString()] = decodeURIComponent(i[1].toString());
+        }
+    });
+    if (queries["i"] && queries["i"].length > 0) {
+        $("#inputscript").val(queries["i"]);
+    }
+});
    //]]>
 </script>
