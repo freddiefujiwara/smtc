@@ -115,5 +115,16 @@ document.location.search.substr(1).split('&').forEach((q) => {
 if (queries["i"] && queries["i"].length > 0) {
     $("#inputscript").val(queries["i"]);
 }
+if (queries["g"] && queries["g"].length > 0) {
+    $.ajax({
+        url: 'https://api.github.com/gists/' + queries["g"],
+        type: 'GET',
+        dataType: 'jsonp'
+    }).then((gistdata) => {
+        $("#inputscript").val(gistdata.data.files[Object.keys(gistdata.data.files)[0]].content);
+    }, (e) => {
+        console.err(e);
+    });
+}
    //]]>
 </script>
