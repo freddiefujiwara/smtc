@@ -119,7 +119,7 @@ describe('Smtc', () => {
       [[],[  ],[  ],[  ],[  ],[  ],[  ],[],[]]
     ]);
   });
-  it(' nSwitchCoverage() : can calculate 1 step coverage', () => {
+  it(' nSwitchCoverage() : can calculate 1 switch coverage', () => {
     const s = new Smtc();
     s.setContents(fs.readFileSync('__tests__/testData.txt','utf8'))
       .initialize();
