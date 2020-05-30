@@ -225,7 +225,6 @@ class Smtc {
   }
   /**
    * flatten states
-   * @public
    * @returns {Array} states flatten the state and fill in this.json.transitions as needed.
    * @desc
    * sometimes the states are nested, so we detect all nested and non-nested states.
