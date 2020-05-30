@@ -124,4 +124,3 @@ Overall flow is the following</p>
 
 **Kind**: instance method of [<code>Smtc</code>](#Smtc)  
 **Returns**: <code>Array</code> - <p>states flatten the state and fill in this.json.transitions as needed.</p>  
-**Access**: public  
