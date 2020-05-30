@@ -8,7 +8,7 @@ describe('Smtc', () => {
     expect(s).not.toBeNull();
     expect(s).toBeInstanceOf(Smtc);
   });
-  it(' setContents(file) : can read all strings from file', () => {
+  it(' setContents(contents) : can read all strings from contents', () => {
     const s = new Smtc();
     expect(s.setContents).toBeInstanceOf(Function);
     expect(s.setContents(fs.readFileSync('__tests__/testData.txt','utf8'))).toBeInstanceOf(Smtc);
@@ -119,7 +119,7 @@ describe('Smtc', () => {
       [[],[  ],[  ],[  ],[  ],[  ],[  ],[],[]]
     ]);
   });
-  it(' nSwitchCoverage() : can calculate 1 step coverage', () => {
+  it(' nSwitchCoverage() : can calculate 1 switch coverage', () => {
     const s = new Smtc();
     s.setContents(fs.readFileSync('__tests__/testData.txt','utf8'))
       .initialize();

@@ -51,7 +51,7 @@ $ smtc __tests__/testData.txt
 |**Reserved**||||Reservation accepted|||Accepting reservations|final|
 |**final**|||||||||
 
-## zero step cases
+## zero switch cases
 
 ```shell
 $ smtc __tests__/testData.txt -t c
@@ -68,7 +68,7 @@ $ smtc __tests__/testData.txt -t c
 |6|Reserved|cancel approval|Reservation accepted|
 |7|Reserved|car delivered|final|
 
-## zero step matrix
+## zero switch matrix
 ```shell
 $ smtc __tests__/testData.txt -t m
 ```
@@ -81,7 +81,7 @@ $ smtc __tests__/testData.txt -t m
 |**Reserved**||cancel|cancel approval||car delivered|
 |**final**||||||
 
-## one step cases
+## one switch cases
 ```shell
 $ smtc __tests__/testData.txt -t c -s 1
 ```
@@ -102,7 +102,7 @@ $ smtc __tests__/testData.txt -t c -s 1
 |11|Reserved|cancel|Accepting reservations|reserve|Reservation accepted|
 |12|Reserved|cancel approval|Reservation accepted|approve|Reserved|
 
-## one step matrix
+## one switch matrix
 ```shell
 $ smtc __tests__/testData.txt -t m -s 1
 ```
