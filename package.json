@@ -1,6 +1,6 @@
 {
   "name": "smtc",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A test case generator from state machine diagram",
   "main": "src/smtc.js",
   "bin": "bin/index.js",
@@ -37,6 +37,6 @@
   "dependencies": {
     "markdown": "^0.5.0",
     "minimist": "^1.2.5",
-    "state-machine-cat": "^7.0.0"
+    "state-machine-cat": "^7.0.3"
   }
 }
