@@ -1,7 +1,9 @@
 _config.yml
+dist/
 DOCS.md
 .github/
 _includes/
 jsdoc.conf.json
+src/markdown.min.js
+src/smcat.min.js
 __tests__/
-dist/
