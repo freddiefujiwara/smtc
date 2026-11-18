@@ -36,6 +36,6 @@
   "dependencies": {
     "markdown": "^0.5.0",
     "minimist": "^1.2.5",
-    "state-machine-cat": "^7.0.3"
+    "state-machine-cat": "^15.0.12"
   }
 }
