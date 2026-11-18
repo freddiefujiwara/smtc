@@ -1,3 +1,5 @@
+import * as defaultSmcat from 'state-machine-cat';
+
 /**
  * @classdesc
  * This is a Smtc class. It's a "S"tate "M"achine "T"est "C"ase generator inspired by https://note.com/yumotsuyo/n/nd3099b40dc1f
@@ -20,7 +22,7 @@ class Smtc {
    * this._clean()
    */
   constructor(smcat){
-    this.smcat = smcat || require('state-machine-cat');
+    this.smcat = smcat || defaultSmcat;
     this._clean();
   }
   /**
@@ -45,9 +47,9 @@ class Smtc {
    * - this.transitions
    * - this.matrix
    */
-  initialize(){
+  async initialize(){
     this._clean();
-    this.json = this.smcat.render(this.contents,{outputType: "json"});
+    this.json = await this.smcat.render(this.contents,{outputType: "json"});
     this.states = this._flattenStates(this.json.states).map((s) => s.name);
     this.json.transitions.forEach((t)=> {
       this.events.push(t.event || "[None]");
@@ -119,8 +121,8 @@ class Smtc {
    * print diagram
    * @public
    */
-  printDiagram(){
-    console.log(this.smcat.render(this.contents,{outputType: "svg"}));
+  async printDiagram(){
+    console.log(await this.smcat.render(this.contents,{outputType: "svg"}));
   }
   /**
    * print transitions
@@ -249,21 +251,5 @@ class Smtc {
     return ret;
   }
 }
-//
-// for old platform because flat is implemented for node > v11 , Chrome > v69, Opera > 56
-// The code was taken from https://stackoverflow.com/questions/50993498/flat-is-not-a-function-whats-wrong
-// by Ivan https://stackoverflow.com/users/6331369/ivan
-//
-Object.defineProperty(Array.prototype, 'flat', {
-  value: function(depth = 1) {
-    return this.reduce(function (flat, toFlatten) {
-      return flat.concat((Array.isArray(toFlatten) && (depth>1)) ? toFlatten.flat(depth-1) : toFlatten);
-    }, []);
-  }
-});
 
-if (typeof module !== 'undefined' && typeof module.exports !== 'undefined'){
-  module.exports = Smtc;
-} else {
-  window.Smtc = Smtc;
-}
+export default Smtc;
