@@ -1,6 +1,6 @@
-const fs = require('fs');
-const smcat = require("state-machine-cat");
-const Smtc = require('../src/smtc');
+import fs from 'fs';
+import * as smcat from 'state-machine-cat';
+import Smtc from '../src/smtc.js';
 
 describe('Smtc', () => {
   it(' constructor() : can create new instance', () => {
@@ -8,23 +8,20 @@ describe('Smtc', () => {
     expect(s).not.toBeNull();
     expect(s).toBeInstanceOf(Smtc);
   });
-  it(' setContents(contents) : can read all strings from contents', () => {
+  it(' setContents(contents) : can read all strings from contents', async () => {
     const s = new Smtc();
     expect(s.setContents).toBeInstanceOf(Function);
     expect(s.setContents(fs.readFileSync('__tests__/testData.txt','utf8'))).toBeInstanceOf(Smtc);
     expect(s.contents).not.toBe("");
     // no such file or directory
     s.setContents("syntax error----");
-    const t = () => {
-      s.initialize();
-    };
-    expect(t).toThrow(/Expected/);
+    await expect(s.initialize()).rejects.toThrow(/Expected/);
   });
-  it(' initialize() : can initialize from this.contents', () => {
+  it(' initialize() : can initialize from this.contents', async () => {
     const s = new Smtc(smcat);
     s.setContents(fs.readFileSync('__tests__/testData.txt','utf8'));
     expect(s.initialize).toBeInstanceOf(Function);
-    expect(s.initialize()).toBeInstanceOf(Smtc);
+    expect(await s.initialize()).toBeInstanceOf(Smtc);
     expect(s.events).toStrictEqual([
       '[None]'                ,// 0
       'reserve'               ,// 1
@@ -59,7 +56,7 @@ describe('Smtc', () => {
     ]);
     //test for testData.nested.txt
     s.setContents(fs.readFileSync('__tests__/testData.nest.txt','utf8'));
-    s.initialize();
+    await s.initialize();
     expect(s.events.length).toBe(19);
     expect(s.events).toStrictEqual([
       "[None]",
@@ -119,9 +116,9 @@ describe('Smtc', () => {
       [[],[  ],[  ],[  ],[  ],[  ],[  ],[],[]]
     ]);
   });
-  it(' nSwitchCoverage() : can calculate 1 switch coverage', () => {
+  it(' nSwitchCoverage() : can calculate 1 switch coverage', async () => {
     const s = new Smtc();
-    s.setContents(fs.readFileSync('__tests__/testData.txt','utf8'))
+    await s.setContents(fs.readFileSync('__tests__/testData.txt','utf8'))
       .initialize();
     expect(s.nSwitchCoverage).toBeInstanceOf(Function);
     const oneSwitch = s.nSwitchCoverage(1);
@@ -133,9 +130,9 @@ describe('Smtc', () => {
       [[],[           ],[                 ],[     ],[     ]]
     ]);
   });
-  it(' printXXX() : can print all methods', () => {
+  it(' printXXX() : can print all methods', async () => {
     let s = new Smtc(smcat);
-    s.setContents(fs.readFileSync('__tests__/testData.txt','utf8'))
+    await s.setContents(fs.readFileSync('__tests__/testData.txt','utf8'))
       .initialize();
 
     expect(s.printDiagram).toBeInstanceOf(Function);
@@ -179,7 +176,7 @@ describe('Smtc', () => {
     expect(output.join("\n")).toBe(fs.readFileSync('__tests__/testData.txt.1matrix','utf8').trim());
 
     s = new Smtc();
-    s.setContents(fs.readFileSync('__tests__/testData.nest.txt','utf8'))
+    await s.setContents(fs.readFileSync('__tests__/testData.nest.txt','utf8'))
       .initialize();
 
     //trasition
@@ -214,14 +211,14 @@ describe('Smtc', () => {
     //restore console.log
     console.log = log;
   });
-  it(' _clean() : can clean all parameters', () => {
+  it(' _clean() : can clean all parameters', async () => {
     const s = new Smtc(smcat);
     expect(s.json).toBe("");
     expect(s.events.length).toBe(0);
     expect(s.states.length).toBe(0);
     expect(s.transitions.length).toBe(0);
     expect(s.matrix.length).toBe(0);
-    s.setContents(fs.readFileSync('__tests__/testData.txt','utf8'))
+    await s.setContents(fs.readFileSync('__tests__/testData.txt','utf8'))
       .initialize();
     s._clean();
     expect(s.json).toBe("");

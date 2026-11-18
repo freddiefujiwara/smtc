@@ -1,7 +1,11 @@
 #!/usr/bin/env node
 
-const pkg = require('../package')
-const argv = require('minimist')(process.argv.slice(2));
+import fs from 'fs';
+import minimist from 'minimist';
+import Smtc from '../src/smtc.js';
+
+const pkg = JSON.parse(fs.readFileSync(new URL('../package.json', import.meta.url), 'utf8'));
+const argv = minimist(process.argv.slice(2));
 if (argv['_'].length < 1 || typeof argv['h'] !== 'undefined'){
   console.error("================================================================================");
   console.error(pkg.description);
@@ -17,16 +21,14 @@ if (argv['_'].length < 1 || typeof argv['h'] !== 'undefined'){
   process.exit(1);
 }
 
-const fs = require('fs');
-const Smtc = require('../src/smtc');
 const s = new Smtc();
 const swi = argv['s'] && parseInt(argv['s']) >= 0 ? argv['s'] : 0;
-const nSwitchCoverage = s.setContents(require('fs').readFileSync(argv['_'][0],'utf8'))
-  .initialize()
-  .nSwitchCoverage(swi);
+await s.setContents(fs.readFileSync(argv['_'][0],'utf8'))
+  .initialize();
+const nSwitchCoverage = s.nSwitchCoverage(swi);
 switch(argv['t']){
   case "d":
-    s.printDiagram();
+    await s.printDiagram();
     break;
   case "m":
     s.printNSwitchMatrix(nSwitchCoverage);
